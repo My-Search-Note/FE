@@ -22,18 +22,18 @@ const Nav = (props: Props) => {
   };
 
   return (
-    <nav className="h-14 px-12 md:px-28 z-50 flex items-center justify-between bg-slate-100 sticky top-0 shadow-sm">
+    <nav className="h-14 px-12 md:px-28 z-50 flex items-center  bg-slate-100 sticky top-0 shadow-sm">
       {isModalOpen ? (
         <AuthModal
-          haldleAuthModal={handleAuthModal}
+          handleAuthModal={handleAuthModal}
           isSignin={isSignin}
           isSignup={isSignup}
         />
       ) : null}
-      <Link href="/">
-        <span className="text-2xl">로고</span>
+      <Link href="/" className="absolute left-0 ml-12">
+        <span className="text-2xl">Logo</span>
       </Link>
-      <div>
+      <div className="absolute right-0 mr-12">
         <button
           className="p-1 mr-4 md:mr-6"
           onClick={() => {
