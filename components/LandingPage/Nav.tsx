@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React, { useState } from "react";
-import AuthModal from "./AuthModal";
+import AuthModal from "./AuthModal/AuthModal";
 
 type Props = {};
 

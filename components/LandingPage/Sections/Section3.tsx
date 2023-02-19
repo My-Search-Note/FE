@@ -1,5 +1,5 @@
 import React from "react";
-import Section3Bubble from "../public/images/Section3Bubble.svg";
+import Section3Bubble from "@/public/images/Section3Bubble.svg";
 import Section3Sparkle1 from "../public/images/Section3Sparkle1.svg";
 import { motion, useAnimation } from "framer-motion";
 

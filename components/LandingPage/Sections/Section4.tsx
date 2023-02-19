@@ -1,5 +1,5 @@
 import React from "react";
-import Section4Star from "../public/images/Section4Star.svg";
+import Section4Star from "@/public/images/Section4Star.svg";
 import Section2Line from "../public/images/Section2Line.svg";
 
 type Props = {};

@@ -1,6 +1,6 @@
 import React from "react";
-import Section1Bubble from "../public/images/Section1Bubble.svg";
-import Section1Sparkle from "../public/images/Section1Sparkle.svg";
+import Section1Bubble from "@/public/images/Section1Bubble.svg";
+import Section1Sparkle from "@/public/images/Section1Sparkle.svg";
 import { motion } from "framer-motion";
 
 type Props = {};

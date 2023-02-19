@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import Section2Bubble from "../public/images/Section2Bubble.svg";
+import Section2Bubble from "@/public/images/Section2Bubble.svg";
 import Section2Line from "../public/images/Section2Line.svg";
 import {
   motion,
