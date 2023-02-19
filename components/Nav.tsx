@@ -16,10 +16,8 @@ const Nav = (props: Props) => {
   const handleAuthModal = (authType?: string) => {
     setIsAuthClicked((prevState) => ({
       isModalOpen: !prevState.isModalOpen,
-      isSignin:
-        authType === "Signin" ? !prevState.isSignin : prevState.isSignin,
-      isSignup:
-        authType === "Signup" ? !prevState.isSignup : prevState.isSignup,
+      isSignin: authType === "Signin" ? !prevState.isSignin : false,
+      isSignup: authType === "Signup" ? !prevState.isSignup : false,
     }));
   };
 
