@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import DehazeRoundedIcon from "@mui/icons-material/DehazeRounded";
 import Box from "@/components/common/Box";
 import Searchbar from "@/components/common/Searchbar";
-import { getMemos } from "@/apis/quickMemo";
+import { getMemos } from "@/apis/quickMemos";
+import Pagination from "@/components/common/Pagination";
 
 type Props = {
   handleAddClick: () => void;
@@ -14,6 +15,13 @@ type Memo = {
   title: string;
   content: string;
   user_id: number;
+  created_at: string;
+};
+
+type MemoPaginationData = {
+  memos: Memo[];
+  page_count: number;
+  total_count: number;
 };
 
 const QuickMemoList = ({ handleAddClick }: Props) => {
@@ -23,18 +31,23 @@ const QuickMemoList = ({ handleAddClick }: Props) => {
     setIsOpen(!isOpen);
   };
 
-  const [memos, setMemos] = useState<readonly Memo[]>([]);
+  const [memos, setMemos] = useState<MemoPaginationData>();
 
   useEffect(() => {
     getMemos()
-      .then((memos) => setMemos(memos))
+      .then((memos) => {
+        setMemos(memos);
+      })
       .catch((error) => console.error(error));
   }, []);
+
+  useEffect(() => {
+    console.log(memos);
+  }, [memos]);
 
   const onDragStart = () => {
     //메모 내용 가져오기
   };
-
   return (
     <div className="bg-slate-300 h-[calc(100%-2.5rem)]">
       <div className="h-24">
@@ -49,7 +62,11 @@ const QuickMemoList = ({ handleAddClick }: Props) => {
           </button>
         </div>
         <div className="h-10 mb-1 px-3 flex justify-between items-center border-t border-t-gray-300">
-          <p className="text-sm font-semibold text-gray-500">42 Memos</p>
+          {memos && (
+            <p className="text-sm font-semibold text-gray-500">
+              {memos.total_count} {memos.total_count > 1 ? "Memos" : "Memo"}
+            </p>
+          )}
         </div>
       </div>
 
@@ -92,44 +109,7 @@ const QuickMemoList = ({ handleAddClick }: Props) => {
 
       {/* pagination */}
       <div className="h-10 flex justify-center items-center">
-        <nav aria-label="Page navigation example">
-          <ul className="list-style-none flex">
-            <li>
-              <a
-                className="relative block rounded bg-transparent py-1.5 px-3 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
-                href="#"
-                aria-label="Previous"
-              >
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-            <li>
-              <a
-                className="relative block rounded bg-transparent py-1.5 px-3 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
-                href="#"
-              >
-                1
-              </a>
-            </li>
-            <li aria-current="page">
-              <a
-                className="relative block rounded bg-transparent py-1.5 px-3 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
-                href="#"
-              >
-                2
-              </a>
-            </li>
-            <li>
-              <a
-                className="relative block rounded bg-transparent py-1.5 px-3 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
-                href="#"
-                aria-label="Next"
-              >
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <Pagination page_count={memos?.page_count ?? 1} />
       </div>
     </div>
   );

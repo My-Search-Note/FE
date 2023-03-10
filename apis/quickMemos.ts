@@ -1,4 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import axiosConfing from "./axiosConfig";
 
@@ -7,15 +6,22 @@ type Memo = {
   title: string;
   content: string;
   user_id: number;
+  created_at: string;
 };
 
-export function getMemos(): Promise<readonly Memo[]> {
+type MemoPaginationData = {
+  memos: Memo[];
+  page_count: number;
+  total_count: number;
+};
+
+export function getMemos(): Promise<MemoPaginationData> {
   return axiosConfing
-    .get<Memo[]>(`/memos`)
-    .then(function (response) {
+    .get<MemoPaginationData>(`/memos`)
+    .then((response) => {
       return response.data;
     })
-    .catch(function (error) {
+    .catch((error) => {
       throw new Error("Failed to fetch memos");
     });
 }
