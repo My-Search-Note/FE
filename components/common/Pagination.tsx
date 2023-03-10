@@ -1,19 +1,23 @@
 import { useState } from "react";
 
 type PaginationProps = {
-  page_count: number;
+  pageCount: number;
+  handlePageClick: (pageNumber: number) => void;
+  currentPage: number;
 };
 
-const Pagination = ({ page_count }: PaginationProps): JSX.Element => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
+//TODO: 페이지 숫자가 컴포넌트 너비를 넘을 경우 처리하기.
 
-  const handlePageClick = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
+const Pagination = ({
+  pageCount,
+  handlePageClick,
+  currentPage,
+}: PaginationProps): JSX.Element => {
+  //   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const renderPagination = (): JSX.Element => {
     const pagination = [];
-    for (let i = 1; i <= page_count; i++) {
+    for (let i = 1; i <= pageCount; i++) {
       pagination.push(
         <li key={i}>
           <button
@@ -45,7 +49,7 @@ const Pagination = ({ page_count }: PaginationProps): JSX.Element => {
             <button
               className="relative block rounded bg-transparent py-1.5 px-3 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
               onClick={() => handlePageClick(currentPage + 1)}
-              disabled={currentPage === page_count}
+              disabled={currentPage === pageCount}
             >
               &raquo;
             </button>

@@ -15,9 +15,9 @@ type MemoPaginationData = {
   total_count: number;
 };
 
-export function getMemos(): Promise<MemoPaginationData> {
+export function getMemos(pageNumber?: number): Promise<MemoPaginationData> {
   return axiosConfing
-    .get<MemoPaginationData>(`/memos`)
+    .get<MemoPaginationData>(`/memos?page=${pageNumber}`)
     .then((response) => {
       return response.data;
     })
