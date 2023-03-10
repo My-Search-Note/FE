@@ -2,8 +2,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import axiosConfing from "./axiosConfig";
 
-//헤더 자동으로 보내주는 거
-
 type Memo = {
   id: number;
   title: string;

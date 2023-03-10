@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
+import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import DehazeRoundedIcon from "@mui/icons-material/DehazeRounded";
 import Box from "@/components/common/Box";
 import Searchbar from "@/components/common/Searchbar";
+import { getMemos } from "@/apis/quickMemo";
 
 type Props = {
   handleAddClick: () => void;
@@ -23,39 +23,31 @@ const QuickMemoList = ({ handleAddClick }: Props) => {
     setIsOpen(!isOpen);
   };
 
-  const BASE_URL = "http://localhost:8080";
-
-  const [memos, setMemos] = useState<Memo[]>([]);
+  const [memos, setMemos] = useState<readonly Memo[]>([]);
 
   useEffect(() => {
-    async function getMemos() {
-      const token = Cookies.get("token");
-      try {
-        const response = await axios.get(`${BASE_URL}/memos`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setMemos(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getMemos();
+    getMemos()
+      .then((memos) => setMemos(memos))
+      .catch((error) => console.error(error));
   }, []);
-
-  useEffect(() => {
-    console.log(memos);
-  }, [memos]);
 
   const onDragStart = () => {
     //메모 내용 가져오기
   };
 
   return (
-    <div className="h-full">
+    <div className="bg-slate-300 h-[calc(100%-2.5rem)]">
       <div className="h-24">
-        <Searchbar />
+        <div className="h-14 w-full flex justify-center">
+          <Searchbar />
+          <button
+            className="bg-yellow-300 h-10 rounded-lg ml-3 px-3 flex items-center justify-center shadow outline-none"
+            onClick={handleAddClick}
+          >
+            <AddCircleOutlineRoundedIcon className="mr-2" />
+            Add
+          </button>
+        </div>
         <div className="h-10 mb-1 px-3 flex justify-between items-center border-t border-t-gray-300">
           <p className="text-sm font-semibold text-gray-500">42 Memos</p>
         </div>

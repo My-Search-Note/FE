@@ -50,7 +50,7 @@ const QuickMemo = (props: Props) => {
       </div>
 
       {/* 바디*/}
-      <div className=" h-[calc(100%-6.5rem)] flex flex-col rounded-md">
+      <div className=" h-[calc(100%-4rem)] flex flex-col rounded-md">
         {!isAddClicked ? (
           <>
             <QuickMemoList handleAddClick={handleAddClick} />
