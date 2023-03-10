@@ -1,5 +1,5 @@
 import React from "react";
-import Nav from "@/components/LandingPage/Nav";
+import Header from "@/components/LandingPage/Header";
 import Sections from "@/components/LandingPage/Sections/index";
 
 type Props = {};
@@ -7,7 +7,7 @@ type Props = {};
 const index = (props: Props) => {
   return (
     <div className="h-fit flex flex-col">
-      <Nav />
+      <Header />
       <Sections />
     </div>
   );
