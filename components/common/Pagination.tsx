@@ -7,14 +7,13 @@ type PaginationProps = {
 };
 
 //TODO: 페이지 숫자가 컴포넌트 너비를 넘을 경우 처리하기.
+//TODO: 현재 페이지 클릭시 데이터 재 호출 막기.
 
 const Pagination = ({
   pageCount,
   handlePageClick,
   currentPage,
 }: PaginationProps): JSX.Element => {
-  //   const [currentPage, setCurrentPage] = useState<number>(1);
-
   const renderPagination = (): JSX.Element => {
     const pagination = [];
     for (let i = 1; i <= pageCount; i++) {

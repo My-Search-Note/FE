@@ -2,10 +2,16 @@
 import { useRef } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
+import axiosConfing from "@/apis/axiosConfig";
 
 type Props = {
   handleAddClick: () => void;
 };
+
+interface MemoContent {
+  title: string;
+  content: string;
+}
 
 const AddNote = ({ handleAddClick }: Props) => {
   const titleRef = useRef<HTMLInputElement>(null);
@@ -14,21 +20,14 @@ const AddNote = ({ handleAddClick }: Props) => {
   const BASE_URL = "http://localhost:8080";
 
   const handleSave = async () => {
+    const newMemo: MemoContent = {
+      title: titleRef.current!.value,
+      content: contentRef.current!.value,
+    };
+
     try {
-      const token = Cookies.get("token");
-      const response = await axios.post(
-        `${BASE_URL}/memos`,
-        {
-          title: titleRef.current!.value,
-          content: contentRef.current!.value,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      handleAddClick(); //뒤로가기
+      const response = await axiosConfing.post(`/memos`, newMemo);
+      handleAddClick();
     } catch (error) {
       console.error(error);
     }
@@ -42,6 +41,7 @@ const AddNote = ({ handleAddClick }: Props) => {
             type="text"
             className="h-10 w-full px-3 rounded-lg z-0 text-md shadow outline-none"
             placeholder="Title"
+            ref={titleRef}
           />
         </div>
         <textarea

@@ -3,53 +3,75 @@ import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRou
 import DehazeRoundedIcon from "@mui/icons-material/DehazeRounded";
 import Box from "@/components/common/Box";
 import Searchbar from "@/components/common/Searchbar";
-import { getMemos } from "@/apis/quickMemos";
+import { addMemo, deleteMemo, getMemos, searchMemo } from "@/apis/quickMemos";
 import Pagination from "@/components/common/Pagination";
 import axios from "axios";
 import axiosConfing from "@/apis/axiosConfig";
+import { MemoContent, Memo, MemoPaginationData } from "@/interfaces/memo";
 
 type Props = {
   handleAddClick: () => void;
 };
 
-type Memo = {
-  id: number;
-  title: string;
-  content: string;
-  user_id: number;
-  created_at: string;
-};
-
-type MemoPaginationData = {
-  memos: Memo[];
-  page_count: number;
-  total_count: number;
-};
-
 const QuickMemoList = ({ handleAddClick }: Props) => {
-  const [data, setData] = useState<MemoPaginationData>();
+  const [data, setData] = useState<MemoPaginationData>({
+    memos: [],
+    total_count: 0,
+    page_count: 1,
+  });
+  const [nextPageData, setNextPageData] = useState<MemoPaginationData>({
+    memos: [],
+    total_count: 0,
+    page_count: 2,
+  });
+
+  const PAGE_SIZE = 5;
+
   const [memos, setMemos] = useState<Memo[]>([]);
+  const [nextPageMemos, setNextPageMemos] = useState<Memo[]>([]);
+
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const [selectedMemoId, setSelectedMemoId] = useState<number | null>(null);
+  const [memoList, setMemoList] = useState<JSX.Element[] | null>(null);
 
-  useEffect(() => {
-    getMemos(1)
-      .then((data) => {
+  const fetchData = async (page: number) => {
+    try {
+      const data = await (searchQuery.length > 0
+        ? searchMemo(searchQuery, page)
+        : getMemos(page));
+      if (page === currentPage) {
         setData(data);
         setMemos(data.memos);
-      })
-      .catch((error) => console.error(error));
-  }, []);
+      } else {
+        setNextPageData(data);
+        setNextPageMemos(data.memos);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
+  //삭제용.
   useEffect(() => {
-    console.log(data);
-  }, [data]);
+    fetchData(currentPage);
+    fetchData(currentPage + 1);
+  }, [currentPage]);
 
   //페이지네이션
-  const handlePageClick = (pageNumber: number) => {
+  const handlePageClck = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    getMemos(pageNumber)
+
+    let apiType;
+
+    if (searchQuery.length > 0) {
+      apiType = searchMemo(searchQuery, pageNumber);
+    } else {
+      apiType = getMemos(pageNumber);
+    }
+
+    apiType
       .then((data) => {
         setData(data);
         setMemos(data.memos);
@@ -57,20 +79,59 @@ const QuickMemoList = ({ handleAddClick }: Props) => {
       .catch((error) => console.log(error));
   };
 
-  //드롭다운 토글
-  const toggleDropDown = (memoId: number) => {
-    setSelectedMemoId((prevId) => (prevId === memoId ? null : memoId));
+  //삭제
+  const handleMemoDelete = async (memoId: number) => {
+    try {
+      const response = await deleteMemo(memoId);
+      setData((prevState) => ({
+        ...prevState,
+        total_count: prevState.total_count - 1,
+        page_count: Math.ceil((prevState.total_count - 1) / PAGE_SIZE),
+      }));
+      setMemos((prevMemos) => {
+        const newMemos = prevMemos.filter((memo) => memo.id !== memoId);
+        const nextMemos = nextPageMemos.slice(0, 5 - newMemos.length);
+        const mergedMemos = [...newMemos, ...nextMemos];
+        setNextPageMemos(nextPageMemos.slice(nextMemos.length));
+        return mergedMemos;
+      });
+      if (nextPageMemos.length === 1 && currentPage < data.page_count) {
+        fetchData(currentPage + 1);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const onDragStart = () => {
-    //메모 내용 가져오기
+  //검색 API 호출
+  const handleSearchMemo = async (searchQuery: string, currentPage: number) => {
+    try {
+      const response = await searchMemo(searchQuery, currentPage);
+      setData(response);
+      setMemos(response.memos);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //드롭다운 토글
+  const toggleDropDown = (memoId: number): void => {
+    setSelectedMemoId((prevId) => (prevId === memoId ? null : memoId));
   };
 
   return (
     <div className="bg-slate-300 h-[calc(100%-2.5rem)]">
       <div className="h-24">
         <div className="h-14 w-full flex justify-center">
-          <Searchbar />
+          {/* <Searchbar /> */}
+          <button
+            onClick={() => {
+              handleSearchMemo(searchQuery, currentPage);
+            }}
+          >
+            검색하는거임
+          </button>
           <button
             className="bg-yellow-300 h-10 rounded-lg ml-3 px-3 flex items-center justify-center shadow outline-none"
             onClick={handleAddClick}
@@ -103,18 +164,17 @@ const QuickMemoList = ({ handleAddClick }: Props) => {
 
                 {selectedMemoId === memo.id && (
                   <div className="absolute right-0 text-center z-10 w-16 bg-white rounded-md shadow-xl">
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                    >
+                    <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                       edit
-                    </a>
-                    <a
-                      href="#"
+                    </button>
+                    <button
+                      onClick={() => {
+                        handleMemoDelete(memo.id);
+                      }}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                     >
                       delete
-                    </a>
+                    </button>
                   </div>
                 )}
               </div>
@@ -133,7 +193,7 @@ const QuickMemoList = ({ handleAddClick }: Props) => {
       <div className="h-10 flex justify-center items-center">
         <Pagination
           pageCount={data?.page_count ?? 1}
-          handlePageClick={handlePageClick}
+          handlePageClick={handlePageClck}
           currentPage={currentPage}
         />
       </div>

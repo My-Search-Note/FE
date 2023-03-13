@@ -21,8 +21,6 @@ const QuickMemo = (props: Props) => {
 
   //TODO: 헤더 클릭하면 새로고침되도록 하기. (검색 후 돌아가기 용도)
 
-  const handleSearch = () => {};
-
   return (
     <motion.div
       initial={{ width: isShrink ? "4rem" : "36rem" }}
