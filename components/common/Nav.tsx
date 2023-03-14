@@ -16,16 +16,13 @@ const Nav = (props: Props) => {
   };
 
   return (
-    <nav className="bg-white w-16 h-full rounded-tr-xl rounded-br-xl py-8 flex flex-col items-center justify-between">
+    <nav className="bg-white w-16 h-full py-8 flex flex-col items-center justify-between">
       <div className="flex flex-col gap-y-6">
         <Link href="/search" className="bg-[#fece2f]">
           <HomeRoundedIcon className="hover:text-[#fece2f]" />
         </Link>
-        <Link href="/note">
+        <Link href="/notes">
           <TextSnippetRoundedIcon />
-        </Link>
-        <Link href="/bookmark">
-          <BookmarkIcon />
         </Link>
         <Link href="/mypage">
           <AccountCircleRoundedIcon />

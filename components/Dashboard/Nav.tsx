@@ -22,11 +22,8 @@ const Nav = (props: Props) => {
         <Link href="/search" className="bg-[#fece2f]">
           <HomeRoundedIcon className="hover:text-[#fece2f]" />
         </Link>
-        <Link href="/note">
+        <Link href="/notes">
           <TextSnippetRoundedIcon />
-        </Link>
-        <Link href="/bookmark">
-          <BookmarkIcon />
         </Link>
         <Link href="/mypage">
           <AccountCircleRoundedIcon />
