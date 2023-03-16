@@ -46,11 +46,10 @@ const Section1 = (props: Props) => {
             animate={Variate.animate}
             initial={Variate.initaial}
             transition={{ duration: 0.6, delay: 0.7 }}
-            className="text-sm font-light mt-2 text-gray-600"
+            className="text-sm text-center font-light mt-2 text-gray-600"
           >
-            Lorem ipsum dolor sit amet,
-            <br /> consectetur adipiscing elit,
-            <br /> sed do eiusmod tempor incididunt
+            Easily organize your findings with MySearchNote
+            <br /> and enhance your learning experience.
           </motion.span>
         </div>
         <div className="md:w-3/5 flex justify-center">
