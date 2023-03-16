@@ -5,6 +5,7 @@ import Box from "@/components/common/Box";
 import Searchbar from "@/components/common/Searchbar";
 import Pagination from "@/components/common/Pagination";
 import { useMemos } from "@/hooks/useMemos";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
 
 type Props = {
   handleAddClick: () => void;
@@ -24,10 +25,10 @@ const QuickMemoList = ({ handleAddClick }: Props) => {
   return (
     <div className="h-[calc(100%-2.5rem)]">
       <div className="h-24">
-        <div className="h-14 w-full">
+        <div className="h-10 w-full">
           <Searchbar />
         </div>
-        <div className="h-10 mb-1 flex justify-between items-center">
+        <div className="h-14 flex justify-between items-center">
           {currentPageData && (
             <p className="text-sm font-semibold">
               {currentPageData.total_count}{" "}
@@ -36,9 +37,9 @@ const QuickMemoList = ({ handleAddClick }: Props) => {
           )}
           <button
             onClick={handleAddClick}
-            className="bg-yellow-300 rounded-lg px-5 py-1 flex items-center justify-center shadow outline-none text-sm font-semibold"
+            className="bg-yellow-300 rounded-lg py-2 px-4 flex items-center justify-center shadow outline-none"
           >
-            Add
+            <AddRoundedIcon className="text-sm font-semibold" />
           </button>
         </div>
       </div>

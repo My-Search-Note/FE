@@ -52,8 +52,6 @@ const QuickMemo = (props: Props) => {
 
       {/* 이 컴포넌트 안에서 작성, 노트 띄움. 얘가 래퍼임.*/}
       <div className="bg-gray-100 h-[calc(100%-3.5rem)] flex flex-col p-2 rounded-md overflow-y-scroll">
-        <Searchbar hasOptions={false} />
-
         {!isAddClicked ? (
           <QuickMemoList handleAddClick={handleAddClick} />
         ) : (

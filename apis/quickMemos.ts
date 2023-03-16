@@ -19,7 +19,9 @@ interface MemoPaginationData {
   total_count: number;
 }
 
-export function getMemos(pageNumber?: number): Promise<MemoPaginationData> {
+export const getMemos = async (
+  pageNumber?: number
+): Promise<MemoPaginationData> => {
   return axiosConfing
     .get<MemoPaginationData>(`/memos?page=${pageNumber}`)
     .then((response) => {
@@ -28,7 +30,7 @@ export function getMemos(pageNumber?: number): Promise<MemoPaginationData> {
     .catch((error) => {
       throw new Error("Failed to fetch memos");
     });
-}
+};
 
 export async function addMemo(memo: MemoContent): Promise<MemoContent> {
   try {

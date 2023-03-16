@@ -52,13 +52,13 @@ const AddNote = ({ handleAddClick }: Props) => {
       </div>
       <div className="flex p-2 justify-between">
         <button
-          className="w-2/5 py-2 text-white bg-gray-300 rounded-md hover:bg-gray-400 focus:outline-none"
+          className="w-2/5 h-10 text-white bg-gray-300 rounded-md hover:bg-gray-400 focus:outline-none"
           onClick={handleAddClick}
         >
           Cancel
         </button>
         <button
-          className="w-2/5 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none"
+          className="w-2/5 h-10 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none"
           onClick={handleSave}
         >
           Save

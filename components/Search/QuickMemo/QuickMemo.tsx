@@ -52,7 +52,7 @@ const QuickMemo = (props: Props) => {
       transition={{
         duration: 0.8,
       }}
-      className="p-3 flex flex-col rounded-t-lg rounded-bl-lg bg-slate-400"
+      className="p-3 flex flex-col bg-white"
     >
       {/* 헤더 */}
       <div className="h-16 relative">
@@ -86,8 +86,6 @@ const QuickMemo = (props: Props) => {
           <AddQuickMemo handleAddClick={toggleAddClicked} />
         )}
       </div>
-
-      {/* 버튼 */}
     </motion.div>
   );
 };

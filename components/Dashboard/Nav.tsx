@@ -16,6 +16,14 @@ const Nav = (props: Props) => {
     Cookies.remove("token");
   };
 
+  const handleGoSearchMain = () => {
+    const setSearchQuery = useSetAtom(searchPageSearchQueryAtom);
+    setSearchQuery("");
+  };
+
+  const q = useAtomValue(searchPageSearchQueryAtom);
+  console.log(q);
+
   return (
     <nav className="bg-white w-[4%] h-full rounded-tr-xl rounded-br-xl py-8 flex flex-col items-center justify-between">
       <div className="flex flex-col gap-y-6">
