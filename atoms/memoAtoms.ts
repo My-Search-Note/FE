@@ -1,6 +1,8 @@
 import { atom } from "jotai";
 import { MemoPaginationData, Memo } from "@/interfaces/memo";
 
+// 이거 다 Memo로 바꿔야하네..
+
 const initailState: MemoPaginationData = {
   memos: [],
   total_count: 0,
