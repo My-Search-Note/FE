@@ -6,6 +6,8 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Cookies from "js-cookie";
+import { useAtomValue, useSetAtom } from "jotai";
+import { searchPageSearchQueryAtom } from "@/atoms/searchAtoms";
 
 type Props = {};
 
@@ -19,14 +21,15 @@ const Nav = (props: Props) => {
   return (
     <nav className="bg-white w-[4%] h-full rounded-tr-xl rounded-br-xl py-8 flex flex-col items-center justify-between">
       <div className="flex flex-col gap-y-6">
-        <Link href="/search" className="bg-[#fece2f]">
+        <Link
+          href="/search"
+          className="bg-[#fece2f]"
+          onClick={handleGoSearchMain}
+        >
           <HomeRoundedIcon className="hover:text-[#fece2f]" />
         </Link>
-        <Link href="/note">
+        <Link href="/notes">
           <TextSnippetRoundedIcon />
-        </Link>
-        <Link href="/bookmark">
-          <BookmarkIcon />
         </Link>
         <Link href="/mypage">
           <AccountCircleRoundedIcon />

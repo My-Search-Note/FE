@@ -14,7 +14,7 @@ const Searchbar = () => {
 
       <input
         type="text"
-        className="h-10 w-full pl-10 pr-3 rounded-lg z-0 text-md shadow outline-none"
+        className="h-10 w-full pl-10 pr-3 rounded-lg z-0 text-md shadow border outline-none"
         placeholder="Search"
         onChange={(e) => setSearchQuery(e.target.value)}
         onKeyDown={(e) => {

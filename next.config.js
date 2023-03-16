@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
+
 const path = require("path");
+const Dotenv = require("dotenv-webpack");
 
 const nextConfig = {
   reactStrictMode: true,
@@ -9,6 +11,7 @@ const nextConfig = {
       use: ["@svgr/webpack"],
     });
 
+    config.plugins.push(new Dotenv({ silent: true }));
     return config;
   },
   sassOptions: {
