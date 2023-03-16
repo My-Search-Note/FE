@@ -1,54 +1,69 @@
-import { useState, useRef } from "react";
-import axios from "axios";
-import { customsearch_v1 } from "googleapis";
+import { useEffect, useRef } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import Pagination from "../common/Pagination";
-import { useAtom } from "jotai";
-import { searchAtom } from "@/atoms/searchAtoms";
+import { useAtom, atom, useAtomValue } from "jotai";
+import {
+  searchPageSearchResultAtom,
+  searchPageSearchQueryAtom,
+  searchPageSearchOptiontAtom,
+  apisearchResultAtom,
+} from "@/atoms/searchAtoms";
+import { getSearchData } from "@/apis/SearchPage";
 import styles from "@/styles/searchStyle.module.scss";
+import { searchQueryAtom } from "@/atoms/memoAtoms";
 
-type GoogleSearchResponse = customsearch_v1.Schema$Search;
+interface GoogleSearchResult {
+  cacheId?: string;
+  title: string;
+  snippet: string;
+  link: string;
+  formattedUrl: string;
+  source: string;
+}
 
-type Props = {};
+interface Thumbnail {
+  url: string;
+}
 
-const SearchList = (props: Props) => {
+interface Thumbnails {
+  default: Thumbnail;
+}
+
+interface YoutubeSearchResult {
+  etag: string;
+  id: {
+    videoId: string;
+  };
+  title: string;
+  link: string;
+  formattedUrl: string;
+  snippet: {
+    title: string;
+    description: string;
+    thumbnails: Thumbnails;
+  };
+  nextPageToken: string;
+  pageInfo: {
+    resultsPerPage: number;
+    totalResults: number;
+  };
+  source: "youtube";
+}
+type CombinedResult = GoogleSearchResult | YoutubeSearchResult;
+
+const SearchList = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const optionRef = useRef<HTMLSelectElement>(null);
+  const googleOptionRef = useRef<HTMLButtonElement>(null);
+  const youtubeOptionRef = useRef<HTMLButtonElement>(null);
 
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResult, setSearchResult] = useAtom(searchPageSearchResultAtom);
+  const [apiSearchResult, setApiSearchResult] = useAtom(apisearchResultAtom);
 
-  const [search, setSearch] = useAtom(searchAtom);
+  const [searchPageSearchQuery, setSearchPageSearchQuery] = useAtom(
+    searchPageSearchQueryAtom
+  );
 
-  async function handleGetData() {
-    const option = "Google";
-    const query = "하하";
-
-    if (!query) {
-      return;
-    }
-
-    const apiKey = "AIzaSyAjsmS6uirJK343FWznmLHvcy31GXD1vIg";
-    const cx = "309ff7e23abf04c9a";
-
-    let url = "";
-    if (option === "Google") {
-      url = `https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${cx}&q=${query}&start=2
-      `;
-    } else if (option === "Github") {
-      url = `https://api.github.com/search/repositories?q=${query}`;
-    } else {
-      return;
-    }
-
-    try {
-      const response = await axios.get<GoogleSearchResponse | any>(url);
-      console.log(response);
-      setSearchResults(response.data.items);
-      console.log(searchResults);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  const [searchOptiont, setSearchOption] = useAtom(searchPageSearchOptiontAtom);
 
   const handlePopUp = (url: string) => {
     const width = 600;
@@ -62,7 +77,24 @@ const SearchList = (props: Props) => {
     popup?.focus();
   };
 
-  //TODO:쿼리 없으면 검색창만 보이게.
+  const handleGetSearchData = async (searchOptiont: string) => {
+    try {
+      const input = inputRef.current!.value;
+      const option = searchOptiont;
+      const searchData = await getSearchData(input, option);
+
+      setSearchResult(searchData);
+      setSearchPageSearchQuery(input);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    handleGetSearchData(searchOptiont);
+  }, [searchOptiont]);
+
+  console.log(searchResult);
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -75,11 +107,13 @@ const SearchList = (props: Props) => {
 
             <input
               type="text"
+              defaultValue={searchPageSearchQuery}
+              ref={inputRef}
               className="h-10 w-full pl-10 pr-3 rounded-lg z-0 text-md shadow outline-none"
               placeholder="Search anything..."
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  handleGetData();
+                  handleGetSearchData(searchOptiont);
                 }
               }}
             />
@@ -90,10 +124,34 @@ const SearchList = (props: Props) => {
       {/* Option Button */}
       <div className=" h-14 flex justify-center items-center">
         <div className="h-10 w-fit border-b border-slate-400 ">
-          <button className="h-full mr-2 px-3 border-b-4 border-slate-500 font-semibold">
+          <button
+            className={`h-full mr-2 px-3 font-semibold border-b-2 ${
+              searchOptiont === "google"
+                ? "border-slate-500"
+                : "border-transparent"
+            }  focus:outline-none`}
+            value={"google"}
+            ref={googleOptionRef}
+            onClick={() => {
+              setSearchOption("google");
+            }}
+          >
             Google
           </button>
-          <button className="h-full px-3 rounded-lg">Github</button>
+          <button
+            className={`h-full mr-2 px-3 font-semibold border-b-2 ${
+              searchOptiont === "youtube"
+                ? "border-slate-500"
+                : "border-transparent"
+            } focus:outline-none`}
+            value={"youtube"}
+            ref={youtubeOptionRef}
+            onClick={() => {
+              setSearchOption("youtube");
+            }}
+          >
+            Youtube
+          </button>
         </div>
       </div>
 
@@ -102,24 +160,35 @@ const SearchList = (props: Props) => {
         <div
           className={`rounded-lg px-5 w-full h-[calc(100%-2.5rem)] grid grid-flow-row grid-rows-10 md:grid-cols-1 overflow-scroll  ${styles["cursor-pointer"]} ${styles["hide-scrollbar"]}`}
         >
-          {searchResults.map((result: any) => (
-            <div
-              className="flex flex-col bg-white px-3 py-2 h-28 border-b-[2px] border-zinc-200 cursor-pointer"
-              key={result.cacheId || result.id}
-              onClick={() => handlePopUp(result.link)}
-            >
-              <p className="text-sm">{result.formattedUrl}</p>
-              <h1 className="font-semibold text-lg">
-                {result.title || result.full_name}
-              </h1>
-              <p>{result.snippet}</p>
-            </div>
-          ))}
-        </div>
+          {searchResult &&
+            searchResult.map((result) => {
+              console.log(result);
+              const isYoutube = result.source === "youtube";
+              const key = isYoutube ? result.etag : result.cacheId;
 
-        <div className="h-10 bg-slate-100 flex justify-center items-center">
-          <Pagination pageCount={1} />
+              const handlePopUp = (link: string) => {
+                window.open(link, "_blank");
+              };
+
+              return (
+                <div
+                  className="flex flex-col bg-white px-3 py-2 h-28 border-b-[2px] border-zinc-200 cursor-pointer"
+                  key={key}
+                  onClick={() => handlePopUp(result.link)}
+                >
+                  {!isYoutube && result.formattedUrl && (
+                    <p className="text-sm">{result.formattedUrl}</p>
+                  )}
+                  <h1 className="font-semibold text-lg">{result.title}</h1>
+                  <p>{isYoutube ? result.description : result.snippet}</p>
+                </div>
+              );
+            })}
         </div>
+      </div>
+
+      <div className="h-10 bg-slate-100 flex justify-center items-center">
+        <Pagination pageCount={1} />
       </div>
     </div>
   );

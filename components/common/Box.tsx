@@ -9,8 +9,8 @@ type Props = {
 const Box = ({ children }: Props) => {
   return (
     <div
-      draggable
-      className="w-full bg-white rounded-lg shadow-md px-3 py-2 cursor-pointer hover:bg-slate-100"
+      draggable="true"
+      className="w-full bg-white border-[2px] px-3 py-2 cursor-pointer rounded-lg hover:bg-slate-100"
     >
       {children}
     </div>

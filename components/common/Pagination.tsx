@@ -1,9 +1,9 @@
 import { useState } from "react";
 
 type PaginationProps = {
-  pageCount: number;
-  handlePageClick: (pageNumber: number) => void;
-  currentPage: number;
+  pageCount?: number;
+  handlePageClick?: (pageNumber: number) => void;
+  currentPage?: number;
 };
 
 //TODO: 페이지 숫자가 컴포넌트 너비를 넘을 경우 처리하기.
