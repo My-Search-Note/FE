@@ -31,7 +31,7 @@ const Header = (props: Props) => {
         />
       ) : null}
       <Link href="/" className="absolute left-0 ml-12">
-        <span className="text-2xl">Logo</span>
+        <span className="font-bold">My search note</span>
       </Link>
       <div className="absolute right-0 mr-12">
         <button

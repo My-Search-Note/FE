@@ -40,7 +40,7 @@ const Section2 = (props: Props) => {
           className="w-60 h-60 p-4 bg-[#f7b3c7] rounded-lg shadow-lg cursor-pointer text-center flex flex-col justify-center"
         >
           <span className="text-3xl font-semibold">
-            "I want to bookmark what I searched."
+            "I forget important information."
           </span>
           <span className="block mt-2 text-3xl">🤔</span>
         </motion.div>
@@ -51,7 +51,7 @@ const Section2 = (props: Props) => {
           className="w-60 h-60 p-4 bg-[#c6dc60] rounded-lg shadow-lg cursor-pointer text-center flex flex-col justify-center"
         >
           <span className="text-3xl font-semibold">
-            "I want to bookmark what I searched."
+            "I lose ideas found while searching."
           </span>
           <span className="block mt-2 text-3xl">😥</span>
         </motion.div>
@@ -62,7 +62,7 @@ const Section2 = (props: Props) => {
           className="w-60 h-60 p-4 bg-[#c3acf1] rounded-lg drop-shadow-lg cursor-pointer text-center flex flex-col justify-center"
         >
           <span className="text-3xl font-semibold">
-            "I want to bookmark what I searched."
+            "I waste time re-searching for info."
           </span>
           <span className="block mt-2 text-3xl">🙄</span>
         </motion.div>
@@ -73,7 +73,7 @@ const Section2 = (props: Props) => {
           className="w-60 h-60 p-4 bg-[#ee4878] rounded-lg shadow-lg cursor-pointer text-center flex flex-col justify-center"
         >
           <span className="text-3xl font-semibold">
-            "I'd like to take a note of what I searched."
+            "I struggle to track and log search results."
           </span>
           <span className="block mt-2 text-3xl">🥺</span>
         </motion.div>
