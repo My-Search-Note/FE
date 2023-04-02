@@ -4,6 +4,7 @@ import DehazeRoundedIcon from "@mui/icons-material/DehazeRounded";
 type MemoListProps = {
   data: MemoListWithCount | undefined;
   toggleMemoId: number | null;
+  setToggleMemoId: (id: number | null) => void;
   handleDropDownToggle: (id: number) => void;
   setSelectedMemoId: (id: number) => void;
   handleMemoFormVisible: () => void;
@@ -14,6 +15,7 @@ type MemoListProps = {
 const MemoListItem = ({
   data,
   toggleMemoId,
+  setToggleMemoId,
   handleDropDownToggle,
   setSelectedMemoId,
   handleMemoFormVisible,
@@ -45,6 +47,7 @@ const MemoListItem = ({
                       onClick={() => {
                         handleMemoFormVisible();
                         setSelectedMemoId(memo.id);
+                        setToggleMemoId(null);
                         setMemoMode("edit");
                       }}
                     >

@@ -1,13 +1,17 @@
 import React from "react";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { getMemos, deleteMemo } from "@/apis/quickMemos";
+import { debounce } from "lodash";
 import Searchbar from "@/components/common/Searchbar";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import Pagination from "@/components/common/Pagination";
-import { useAtom, useAtomValue, atom, useSetAtom } from "jotai";
-import { getMemos } from "@/apis/quickMemos";
-import { selectedMemoIdAtom, toggleMemoIdAtom } from "@/atoms/quickMemoAtoms";
-import { deleteMemo } from "@/apis/quickMemos";
-import { memoModeAtom } from "@/atoms/quickMemoAtoms";
 import MemoListItem from "./MemoListItem";
+import {
+  memoModeAtom,
+  selectedMemoIdAtom,
+  toggleMemoIdAtom,
+  memoSearchQueryAtom,
+} from "@/atoms/quickMemoAtoms";
 
 interface Props {
   handleMemoFormVisible: () => void;
@@ -16,12 +20,28 @@ interface Props {
 const QuickMemoList = ({ handleMemoFormVisible }: Props) => {
   const [toggleMemoId, setToggleMemoId] = useAtom(toggleMemoIdAtom);
   const setMemoMode = useSetAtom(memoModeAtom);
+  const setmemoSearchQuery = useSetAtom(memoSearchQueryAtom);
   const setSelectedMemoId = useSetAtom(selectedMemoIdAtom);
 
   const deleteMutation = deleteMemo();
 
   const handleDelete = (memoId: number) => {
     deleteMutation.mutate(memoId);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      const target = e.target as HTMLInputElement;
+      setmemoSearchQuery(target.value);
+    }
+  };
+
+  const debouncedHandleChange = debounce((input) => {
+    setmemoSearchQuery(input);
+  }, 600);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    debouncedHandleChange(e.target.value);
   };
 
   const handleDropDownToggle = (memoId: number): void => {
@@ -34,16 +54,19 @@ const QuickMemoList = ({ handleMemoFormVisible }: Props) => {
     <div className="h-[calc(100%-2.5rem)] ">
       <div className="h-24">
         <div className="h-10 w-full">
-          <Searchbar />
+          <Searchbar
+            handleKeyDown={handleKeyDown}
+            handleChange={handleChange}
+          />
         </div>
-        <div className="h-14 flex justify-between items-center ">
-          {data && (
-            <div className="w-full">
+        <div className="w-full h-14 flex justify-between items-center ">
+          <div className="">
+            {data && (
               <p className="text-sm font-semibold">
                 {data.totalCount} {data.totalCount > 1 ? "Memos" : "Memo"}
               </p>
-            </div>
-          )}
+            )}
+          </div>
           <button
             onClick={() => {
               handleMemoFormVisible();
@@ -60,6 +83,7 @@ const QuickMemoList = ({ handleMemoFormVisible }: Props) => {
         <MemoListItem
           data={data}
           toggleMemoId={toggleMemoId}
+          setToggleMemoId={setToggleMemoId}
           handleDropDownToggle={handleDropDownToggle}
           handleDelete={handleDelete}
           setSelectedMemoId={setSelectedMemoId}

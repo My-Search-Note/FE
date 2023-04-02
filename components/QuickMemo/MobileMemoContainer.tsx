@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useAtom, useSetAtom } from "jotai";
 import { useRouter } from "next/router";
+import { debounce } from "lodash";
 import AddQuickMemo from "./MemoForm";
 import QuickMemoList from "./MemoList";
 import {
   isMemoFormVisibleAtom,
-  memoSearchQuery,
+  memoSearchQueryAtom,
   currentPageNumberAtom,
   memoModeAtom,
 } from "@/atoms/quickMemoAtoms";
@@ -17,7 +18,7 @@ const QuickMemo = () => {
   const [memoMode, setMemoMode] = useAtom(memoModeAtom);
 
   const setCurrentPageNumber = useSetAtom(currentPageNumberAtom);
-  const setSearchQuery = useSetAtom(memoSearchQuery);
+  const setSearchQuery = useSetAtom(memoSearchQueryAtom);
 
   const router = useRouter();
 
@@ -32,8 +33,8 @@ const QuickMemo = () => {
     setState((prev) => !prev);
   };
 
-  //back back반복되는 문제 수정.
   useEffect(() => {
+    if (router.pathname !== "/memos") return;
     const handleResize = () => {
       if (window.innerWidth >= 768) {
         router.back();
@@ -41,6 +42,8 @@ const QuickMemo = () => {
     };
 
     window.addEventListener("resize", handleResize);
+
+    handleResize();
 
     return () => {
       window.removeEventListener("resize", handleResize);
