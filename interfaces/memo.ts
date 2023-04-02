@@ -1,16 +1,18 @@
-export interface MemoContent {
+export interface Memo extends MemoBody {
+  id: number;
+  userId: number;
+  createdAt: string;
+}
+
+export interface MemoBody {
   title: string;
   content: string;
 }
 
-export interface Memo extends MemoContent {
-  id: number;
-  user_id: number;
-  created_at: string;
+export interface MemoListWithCount {
+  memos: Memo[];
+  pageCount: number;
+  totalCount: number;
 }
 
-export interface MemoPaginationData {
-  memos: Memo[];
-  page_count: number;
-  total_count: number;
-}
+export type MemoMode = "add" | "edit" | "view";

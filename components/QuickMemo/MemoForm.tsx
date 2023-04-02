@@ -1,10 +1,9 @@
 import { useRef } from "react";
-import { addMemo } from "@/apis/quickMemos";
+import { addMemo, getMemoById, editMemo } from "@/apis/quickMemos";
 import { memoModeAtom } from "@/atoms/quickMemoAtoms";
 import { useAtomValue, useSetAtom } from "jotai";
-import { getMemoById, editMemo } from "@/apis/quickMemos";
-import MemoFormButton from "./MemoFormButton";
 import { MemoMode } from "@/interfaces/memo";
+import MemoFormButton from "./MemoFormButton";
 
 interface Props {
   mode: MemoMode;

@@ -1,7 +1,7 @@
 import axiosConfig from "./axiosConfig";
 import {
   currentPageNumberAtom,
-  memoSearchQuery,
+  memoSearchQueryAtom,
   selectedMemoIdAtom,
 } from "@/atoms/quickMemoAtoms";
 import { atomsWithQuery } from "jotai-tanstack-query";
@@ -11,7 +11,7 @@ import { useAtom } from "jotai";
 
 export const [, getMemos] = atomsWithQuery((get) => {
   const currentPageNumber = get(currentPageNumberAtom);
-  const searchQuery = get(memoSearchQuery);
+  const searchQuery = get(memoSearchQueryAtom);
 
   const url =
     searchQuery.length > 0
@@ -52,7 +52,7 @@ export const addMemo = () => {
   const [currentPageNumber, setCurrentPageNumber] = useAtom(
     currentPageNumberAtom
   );
-  const [searchQuery, setSearchQuery] = useAtom(memoSearchQuery);
+  const [searchQuery, setSearchQuery] = useAtom(memoSearchQueryAtom);
   const queryClient = useQueryClient();
 
   return useMutation(
@@ -82,7 +82,7 @@ export const addMemo = () => {
 
 export const deleteMemo = () => {
   const [currentPageNumber] = useAtom(currentPageNumberAtom);
-  const [searchQuery] = useAtom(memoSearchQuery);
+  const [searchQuery] = useAtom(memoSearchQueryAtom);
   const queryClient = useQueryClient();
 
   return useMutation(
@@ -110,7 +110,7 @@ export const deleteMemo = () => {
 //에러 성공 메시지
 export const editMemo = () => {
   const [currentPageNumber] = useAtom(currentPageNumberAtom);
-  const [searchQuery] = useAtom(memoSearchQuery);
+  const [searchQuery] = useAtom(memoSearchQueryAtom);
   const [selectedMemoId] = useAtom(selectedMemoIdAtom);
   const queryClient = useQueryClient();
 

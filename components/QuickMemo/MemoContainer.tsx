@@ -9,7 +9,7 @@ import Cookies from "js-cookie";
 import {
   isMemoFormVisibleAtom,
   isCollapsedAtom,
-  memoSearchQuery,
+  memoSearchQueryAtom,
   currentPageNumberAtom,
   memoModeAtom,
 } from "@/atoms/quickMemoAtoms";
@@ -20,9 +20,10 @@ const QuickMemo = () => {
     isMemoFormVisibleAtom
   );
   const [memoMode, setMemoMode] = useAtom(memoModeAtom);
+  console.log(memoMode);
 
   const setCurrentPageNumber = useSetAtom(currentPageNumberAtom);
-  const setSearchQuery = useSetAtom(memoSearchQuery);
+  const setSearchQuery = useSetAtom(memoSearchQueryAtom);
 
   const router = useRouter();
 
@@ -31,21 +32,6 @@ const QuickMemo = () => {
     setSearchQuery("");
   };
 
-  //back back반복되는 문제 수정.
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 768) {
-        router.back();
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [router]);
-
   useEffect(() => {
     const savedToggleState = Cookies.get("toggleState");
     if (savedToggleState) {
@@ -53,7 +39,7 @@ const QuickMemo = () => {
     }
   }, []);
 
-  const handleToggle = () => {
+  const handleCollapse = () => {
     const newToggleState = !isCollapsed;
     setIsCollapsed(newToggleState);
     Cookies.set("toggleState", newToggleState.toString());
@@ -86,7 +72,7 @@ const QuickMemo = () => {
             <ArrowForwardIosRoundedIcon
               className="cursor-pointer"
               onClick={() => {
-                handleToggle();
+                handleCollapse();
               }}
             />
           </motion.div>
@@ -113,7 +99,6 @@ const QuickMemo = () => {
             <QuickMemoList
               handleMemoFormVisible={() => {
                 toggleState(setIsMemoFormVisible);
-                setMemoMode("add");
               }}
             />
           )}

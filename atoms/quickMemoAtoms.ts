@@ -3,7 +3,7 @@ import { MemoMode } from "@/interfaces/memo";
 
 export const currentPageNumberAtom = atom<number>(1); //현재 페이지 기준으로 다음 페이지 불러옴
 
-export const memoSearchQuery = atom<string>(""); //검색어
+export const memoSearchQueryAtom = atom<string>(""); //검색어
 
 export const selectedMemoIdAtom = atom<number | null>(null); //편집시 사용
 
