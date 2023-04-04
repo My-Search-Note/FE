@@ -1,115 +1,101 @@
-import { useRef } from "react";
-import axios from "axios";
-import SearchIcon from "@mui/icons-material/Search";
+import { useEffect } from "react";
 import { useAtom, useSetAtom } from "jotai";
 import {
-  searchPageSearchQueryAtom,
-  searchPageSearchResultAtom,
+  searchExcutedAtom,
+  searchSearchQueryAtom,
+  searchTempQueryAtom,
 } from "@/atoms/searchAtoms";
-import { getSearchData } from "@/apis/SearchPage";
-import Cookies from "js-cookie";
+import { getFormattedDate, getGreeting } from "@/utils/timeUtils";
+import { userNameAtom, userPictureAtom } from "@/atoms/userAtoms";
+import { deleteAccount } from "@/apis/User";
+import { useRouter } from "next/router";
+import Searchbar from "../common/Searchbar";
 
 const SearchMain = () => {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [userName, setUserName] = useAtom(userNameAtom);
+  const [userPicture, setUserPicture] = useAtom(userPictureAtom);
+  const userImage = userPicture || "/images/user.png";
 
-  const setSearchResult = useSetAtom(searchPageSearchResultAtom);
-  const setSearchPageSearchQuery = useSetAtom(searchPageSearchQueryAtom);
+  const setSearchPageSearchQuery = useSetAtom(searchSearchQueryAtom);
+  const setSearchTempQuery = useSetAtom(searchTempQueryAtom);
+  const setSearchExcuted = useSetAtom(searchExcutedAtom);
 
-  const handleGetSearchData = async () => {
-    try {
-      const input = inputRef.current!.value;
-      const searchData = await getSearchData(input);
+  const route = useRouter();
 
-      setSearchResult(searchData);
-      setSearchPageSearchQuery(input);
-    } catch (error) {
-      console.error(error);
+  const date = getFormattedDate();
+  const greeting = getGreeting();
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      const target = e.target as HTMLInputElement;
+      setSearchPageSearchQuery(target.value);
+      setSearchTempQuery(target.value);
+      setSearchExcuted(true);
     }
   };
 
-  const date = new Date().toLocaleDateString("en-us", {
-    weekday: "long",
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
+  const deleteAccountMutation = deleteAccount();
 
-  const Getgreeting = () => {
-    const currentHour = new Date().getHours();
-
-    if (currentHour >= 5 && currentHour < 12) {
-      return "Good morning";
-    } else if (currentHour >= 12 && currentHour < 18) {
-      return "Good afternoon";
-    } else {
-      return "Good evening";
-    }
+  //onSuccess 옮기기
+  const handleDeleteAccount = async () => {
+    deleteAccountMutation.mutate(null, {
+      onSuccess: () => {
+        route.push("/");
+      },
+      onError: (error) => {
+        console.error("Error signing in:", error);
+      },
+    });
   };
 
-  const greeting = Getgreeting();
-
-  //TODO:게스트 이름 가져와서 변경하기
-
-  //쿠키설정
-  // let cookie = Cookies.get("searchHistory") || [];
-  // cookie.push("어쩌고");
+  useEffect(() => {
+    const storeName = sessionStorage.getItem("name");
+    if (storeName) {
+      setUserName(storeName);
+    }
+    const storePicture = sessionStorage.getItem("picture");
+    if (storePicture) {
+      setUserPicture(storePicture);
+    }
+  }, []);
 
   return (
-    <div className="w-full h-full flex flex-col">
-      <div className="h-full flex flex-col relative">
-        <div className="h-[16rem] w-full bg-gray-700 flex flex-col px-5 py-3 saturate-50 bg-[url('/images/SearchMain.jpg')] bg-bottom bg-cover">
-          <div className="h-[4rem] flex flex-col justify-center">
-            <p className="font-semibold text-4xl">{greeting}, guest!</p>
+    <div className="flex flex-col h-full px-3 w-full">
+      {/* Image */}
+      <div className="bg-white drop-shadow-sm flex flex-col items-center justify-center lg:drop-shadow-xl h-full">
+        <div
+          className="bg-bottom bg-cover flex justify-between h-32 px-5 py-3 saturate-50 w-full"
+          style={{ backgroundImage: "url('/images/SearchMain.jpg')" }}
+        >
+          <div>
+            <p className="font-semibold lg:text-4xl text-2xl">
+              {greeting}, {userName}!
+            </p>
+            <p className="lg:mt-2 lg:text-lg text-sm">{date}</p>
           </div>
-          <p className="font-semibold">{date}</p>
+          <div className="cursor-pointer group h-12 relative rounded-full w-12 p-2">
+            <img
+              src={userImage}
+              alt="User Profile Picture"
+              className="object-cover rounded-full"
+            />
+            <button
+              className="absolute bg-white hover:bg-gray-100 hover:text-gray-900 invisible group-hover:visible p-2 right-5 text-center text-gray-500 text-sm top-8 w-32"
+              onClick={handleDeleteAccount}
+            >
+              Delete Account
+            </button>
+          </div>
         </div>
-
-        <div className="h-[calc(100%-5rem)] absolute top-[10rem] bottom-0 left-0 right-0 p-3">
-          <div className="h-full bg-white rounded-lg drop-shadow-xl flex flex-col justify-center items-center">
-            {/* Searchbar, Search */}
-            <div className="w-3/5 h-1/2 py-4 flex flex-col items-center justify-between">
-              {/* Searchbar */}
-              <div className="w-full h-fit">
-                <h1 className="font-semibold text-2xl mb-3 ">Search</h1>
-                <div className="relative">
-                  <div className="absolute top-1.5 left-2">
-                    <SearchIcon className="text-gray-400 z-20 hover:text-gray-500" />
-                  </div>
-
-                  <input
-                    type="text"
-                    className="h-10 w-full pl-10 pr-3 rounded-lg z-0 text-md shadow outline-none bg-slate-200"
-                    placeholder="Search on Google, Youtube"
-                    ref={inputRef}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        handleGetSearchData();
-                      }
-                    }}
-                  />
-                </div>
-              </div>
-
-              {/* Shirink & f */}
-              <div className="max-h-50 h-fit w-full mt-11">
-                <p className=" font-semibold text-zinc-600 mb-3">
-                  Recently searched
-                </p>
-                <div className="grid grid-flow-row-dense grid-cols-3 grid-rows-2 gap-2">
-                  <button className="border rounded-lg px-4 py-1">
-                    자바스크립트 잘하는법
-                  </button>
-                  <button className="border rounded-lg px-4 py-1">
-                    아이고 ~~~ 힘들다~~~~...
-                  </button>
-                  <button className="border rounded-lg px-4 py-1">
-                    아이고 ~~~ 힘들다~~~~...
-                  </button>
-                  <button className="border rounded-lg px-4 py-1">
-                    아이고 ~~~ 힘들다~~~~...
-                  </button>
-                </div>
-              </div>
+        <div className="flex items-center justify-center h-[calc(100%_-_8rem)] px-3 w-full">
+          <div className="flex flex-col items-center justify-center md:h-1/2 md:w-4/5 py-4">
+            <div className="h-fit w-full">
+              <h1 className="font-semibold mb-3 text-2xl">Search</h1>
+              <Searchbar
+                bgColor="bg-zinc-200"
+                handleKeyDown={handleKeyDown}
+                placeholder="Search on Google, Youtube"
+              />
             </div>
           </div>
         </div>
