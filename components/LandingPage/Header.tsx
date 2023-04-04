@@ -2,9 +2,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import AuthModal from "./AuthModal/AuthModal";
 
-type Props = {};
-
-const Header = (props: Props) => {
+const Header = () => {
   const [isAuthClicked, setIsAuthClicked] = useState({
     isModalOpen: false,
     isSignin: false,
@@ -15,7 +13,7 @@ const Header = (props: Props) => {
 
   const handleAuthModal = (authType?: string) => {
     setIsAuthClicked((prevState) => ({
-      isModalOpen: !prevState.isModalOpen,
+      isModalOpen: authType ? true : !prevState.isModalOpen,
       isSignin: authType === "Signin" ? !prevState.isSignin : false,
       isSignup: authType === "Signup" ? !prevState.isSignup : false,
     }));
@@ -43,7 +41,7 @@ const Header = (props: Props) => {
           Sign in
         </button>
         <button
-          className="bg-black text-white rounded-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:shadow-outline"
+          className="bg-black text-white py-2 px-4 hover:bg-gray-700 focus:outline-none focus:shadow-outline"
           onClick={() => {
             handleAuthModal("Signup");
           }}

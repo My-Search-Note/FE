@@ -27,7 +27,7 @@ const Section3 = (props: Props) => {
           id="img"
           src="/images/Section3Model.png"
           alt="model"
-          className="w-[300px] h-[400px] rounded-lg absolute bottom-24"
+          className="w-[300px] h-[400px] absolute bottom-24"
         />
       </div>
       <div className="flex w-3/5 flex-col items-center py-48 relative">
@@ -38,10 +38,13 @@ const Section3 = (props: Props) => {
             initial={{ opacity: 0, x: 40 }}
             transition={{ duration: 0.7, delay: 0.4 }}
           >
-            <h1 className="text-2xl font-bold">Book-mark Search history</h1>
+            <h1 className="text-2xl font-bold underline decoration-4 decoration-amber-300">
+              Just One Click Away
+            </h1>
             <span className="text-md">
-              psum has been the industry's standard <br /> dummy text ever since
-              the 1500s, when an unknown printer
+              Explore YouTube and Google search results all at once.
+              <br />
+              Save time and find the information you need faster.
             </span>
           </motion.div>
           <motion.div
@@ -49,10 +52,12 @@ const Section3 = (props: Props) => {
             initial={{ opacity: 0, x: 40 }}
             transition={{ duration: 0.7, delay: 0.5 }}
           >
-            <h1 className="text-2xl font-bold">Book-mark Search history</h1>
+            <h1 className="text-2xl font-bold underline decoration-4 decoration-amber-300">
+              Search and Memo Combo
+            </h1>
             <span className="text-md">
-              psum has been the industry's standard <br /> dummy text ever since
-              the 1500s, when an unknown printer
+              Discover the smart way to search
+              <br /> and keep track of your findings with our memo feature.
             </span>
           </motion.div>
           <motion.div
@@ -60,10 +65,12 @@ const Section3 = (props: Props) => {
             initial={{ opacity: 0, x: 40 }}
             transition={{ duration: 0.7, delay: 0.6 }}
           >
-            <h1 className="text-2xl font-bold">Book-mark Search history</h1>
+            <h1 className="text-2xl font-bold underline decoration-4 decoration-amber-300">
+              Monthly Memo Tracking
+            </h1>
             <span className="text-md">
-              psum has been the industry's standard <br /> dummy text ever since
-              the 1500s, when an unknown printer
+              Our feature lets you easily track and monitor
+              <br /> your monthly memo count, helping you stay organized.
             </span>
           </motion.div>
         </div>

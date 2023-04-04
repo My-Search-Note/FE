@@ -37,7 +37,7 @@ const Section2 = (props: Props) => {
           initial={{ opacity: 0.8, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 2, delay: 0, type: "spring" }}
-          className="w-60 h-60 p-4 bg-[#f7b3c7] rounded-lg shadow-lg cursor-pointer text-center flex flex-col justify-center"
+          className="w-60 h-60 p-4 bg-[#f7b3c7] shadow-lg cursor-pointer text-center flex flex-col justify-center"
         >
           <span className="text-3xl font-semibold">
             "I forget important information."
@@ -48,7 +48,7 @@ const Section2 = (props: Props) => {
           initial={{ opacity: 0.8, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 2, delay: 0.1, type: "spring" }}
-          className="w-60 h-60 p-4 bg-[#c6dc60] rounded-lg shadow-lg cursor-pointer text-center flex flex-col justify-center"
+          className="w-60 h-60 p-4 bg-[#c6dc60] shadow-lg cursor-pointer text-center flex flex-col justify-center"
         >
           <span className="text-3xl font-semibold">
             "I lose ideas found while searching."
@@ -59,7 +59,7 @@ const Section2 = (props: Props) => {
           initial={{ opacity: 0.8, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 2, delay: 0.2, type: "spring" }}
-          className="w-60 h-60 p-4 bg-[#c3acf1] rounded-lg drop-shadow-lg cursor-pointer text-center flex flex-col justify-center"
+          className="w-60 h-60 p-4 bg-[#c3acf1] drop-shadow-lg cursor-pointer text-center flex flex-col justify-center"
         >
           <span className="text-3xl font-semibold">
             "I waste time re-searching for info."
@@ -70,7 +70,7 @@ const Section2 = (props: Props) => {
           initial={{ opacity: 0.8, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 2, delay: 0.3, type: "spring" }}
-          className="w-60 h-60 p-4 bg-[#ee4878] rounded-lg shadow-lg cursor-pointer text-center flex flex-col justify-center"
+          className="w-60 h-60 p-4 bg-[#ee4878] shadow-lg cursor-pointer text-center flex flex-col justify-center"
         >
           <span className="text-3xl font-semibold">
             "I struggle to track and log search results."
