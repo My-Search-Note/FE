@@ -3,18 +3,16 @@ import Section1Bubble from "@/public/images/Section1Bubble.svg";
 import Section1Sparkle from "@/public/images/Section1Sparkle.svg";
 import { motion } from "framer-motion";
 
-type Props = {};
-
 const Variate = {
   animate: { y: 0, opacity: 1 },
   initaial: { y: 60, opacity: 0 },
 };
 
-const Section1 = (props: Props) => {
+const Section1 = () => {
   return (
     <div className="h-screen px-10 flex justify-center">
-      <div className="w-full h-[calc(100%-3.5rem)] p-12 flex flex-col md:flex-row items-center">
-        <div className="md:w-2/5 flex flex-col items-center">
+      <div className="w-full h-[calc(100%-3.5rem)] p-12 flex items-center">
+        <div className="w-2/5 flex flex-col items-center">
           <motion.h1
             animate={Variate.animate}
             initial={Variate.initaial}
@@ -52,17 +50,21 @@ const Section1 = (props: Props) => {
             <br /> and enhance your learning experience.
           </motion.span>
         </div>
-        <div className="md:w-3/5 flex justify-center">
-          <Section1Bubble
-            width="500"
-            height="500"
-            className="md:w-[500px] relative"
+        <div className="w-3/5 h-full flex items-center justify-center relative">
+          <img
+            src="/images/Section1Bubble.png"
+            alt="Bubble"
+            className="w-[600px] h-[600px] absolute"
           />
-          <Section1Sparkle className="md:w-[650px] md:h-[650px] absolute top-24" />
+          <img
+            src="/images/Section1Sparkle.png"
+            alt="Sparkle"
+            className="w-[600px] h-[600px] absolute top-10"
+          />
           <img
             src="/images/Section1Model.png"
-            alt="model"
-            className="w-1/2 md:w-[450px] md:h-[450px] absolute top-1/2 md:top-1/3"
+            alt="Model"
+            className="w-[450px] h-[450px] absolute top-30"
           />
         </div>
       </div>

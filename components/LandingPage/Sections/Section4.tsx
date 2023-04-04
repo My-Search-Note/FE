@@ -1,14 +1,8 @@
-import React from "react";
-import Section4Star from "@/public/images/Section4Star.svg";
-import Section2Line from "../public/images/Section2Line.svg";
-
-type Props = {};
-
-const Section4 = (props: Props) => {
+const Section4 = () => {
   return (
     <div className="h-screen px-10 flex flex-col justify-center items-center py-20">
       <div>
-        <Section4Star className="w-[100px] h-[100px]" />
+        <img src="/images/Section4Star.png" alt="Star" className="w-28" />
       </div>
       <div className="mt-8 text-center">
         <h1 className="text-6xl" style={{ fontFamily: "AbrilFatface-Regular" }}>
