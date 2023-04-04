@@ -1,19 +1,21 @@
-import { useState } from "react";
+import { useAtom } from "jotai";
+import { currentPageNumberAtom } from "@/atoms/quickMemoAtoms";
 
-type PaginationProps = {
-  pageCount?: number;
-  handlePageClick?: (pageNumber: number) => void;
-  currentPage?: number;
-};
+interface PaginationProps {
+  pageCount: number;
+}
 
 //TODO: 페이지 숫자가 컴포넌트 너비를 넘을 경우 처리하기.
 //TODO: 현재 페이지 클릭시 데이터 재 호출 막기.
 
-const Pagination = ({
-  pageCount,
-  handlePageClick,
-  currentPage,
-}: PaginationProps): JSX.Element => {
+const Pagination = ({ pageCount = 1 }: PaginationProps): JSX.Element => {
+  const [, setCurrentPageNumber] = useAtom(currentPageNumberAtom);
+  const [currentPage] = useAtom(currentPageNumberAtom);
+
+  const handlePageClick = (pageNumber: number) => {
+    setCurrentPageNumber(pageNumber);
+  };
+
   const renderPagination = (): JSX.Element => {
     const pagination = [];
     for (let i = 1; i <= pageCount; i++) {

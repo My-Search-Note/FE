@@ -1,11 +1,21 @@
-import React, { useMemo } from "react";
+import React from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import { useMemos } from "@/hooks/useMemos";
 
-const Searchbar = () => {
-  const { handleSearchMemo, searchQuery, setSearchQuery, currentPageNumber } =
-    useMemos();
+interface Props {
+  bgColor?: string;
+  placeholder?: string;
+  value?: string;
+  handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleKeyDown?: (e: React.KeyboardEvent) => void;
+}
 
+const Searchbar = ({
+  bgColor,
+  placeholder,
+  value,
+  handleChange,
+  handleKeyDown,
+}: Props) => {
   return (
     <div className="w-full relative">
       <div className="absolute top-1.5 left-2">
@@ -14,14 +24,11 @@ const Searchbar = () => {
 
       <input
         type="text"
-        className="h-10 w-full pl-10 pr-3 rounded-lg z-0 text-md shadow border outline-none"
-        placeholder="Search"
-        onChange={(e) => setSearchQuery(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            handleSearchMemo(searchQuery, currentPageNumber);
-          }
-        }}
+        className={`h-10 w-full pl-10 pr-3 z-0 text-md border-2 outline-none ${bgColor}`}
+        placeholder={placeholder || "Search"}
+        value={value}
+        onChange={(e) => handleChange && handleChange(e)}
+        onKeyDown={(e) => handleKeyDown && handleKeyDown(e)}
       />
     </div>
   );

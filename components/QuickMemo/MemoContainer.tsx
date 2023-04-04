@@ -20,7 +20,6 @@ const QuickMemo = () => {
     isMemoFormVisibleAtom
   );
   const [memoMode, setMemoMode] = useAtom(memoModeAtom);
-  console.log(memoMode);
 
   const setCurrentPageNumber = useSetAtom(currentPageNumberAtom);
   const setSearchQuery = useSetAtom(memoSearchQueryAtom);
