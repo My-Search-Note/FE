@@ -3,44 +3,76 @@ import { useRouter } from "next/router";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signinSchema } from "./authSchema";
-import Cookies from "js-cookie";
-import axios from "axios";
+import { signIn, googleOAuth } from "@/apis/User";
+import { SignInInfo } from "@/interfaces/user";
+import SignInForm from "./SigninForm";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
-type Props = {
+interface Props {
   handleAuthModal: (authType?: string) => void;
-};
-
-type formData = {
-  email: string;
-  password: string;
-};
+}
 
 const SigninContent = ({ handleAuthModal }: Props) => {
-  const BASE_URL = "http://localhost:8080/api";
-
   const router = useRouter();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<formData>({
+  } = useForm<SignInInfo>({
     resolver: yupResolver(signinSchema),
   });
 
-  const onSubmit = async (data: formData) => {
-    try {
-      const response = await axios.post(`${BASE_URL}/signin`, data);
-      const { token } = response.data;
-      Cookies.set("token", token); //token 저장하기
-      console.log(Cookies.get("token"));
-      handleAuthModal(); //모달 닫는 함수
+  const signInMutation = signIn();
+  const googleOAuthMutation = googleOAuth();
 
+  const handleSignin = async (data: SignInInfo) => {
+    try {
+      await signInMutation.mutateAsync(data);
+      handleAuthModal();
       router.push("/search");
     } catch (error) {
-      console.error(error);
+      console.error("Error signing in:", error);
     }
+  };
+
+  const handleGoogleLogin = () => {
+    const googleAuthUrl =
+      "https://accounts.google.com/o/oauth2/auth?" +
+      "client_id=1068422395642-8ss0mk5h8b873emq57jmk1daol23av53.apps.googleusercontent.com&" +
+      "redirect_uri=http://localhost:3000/auth/google/callback&" +
+      "response_type=token&" +
+      "scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile";
+
+    const popup = window.open(googleAuthUrl, "_blank", "width=500,height=500");
+
+    // 팝업 차단기가 설정되어 있는 경우
+    if (!popup) {
+      alert("Please disable your popup blocker and try again.");
+      return;
+    }
+
+    const timer = setInterval(() => {
+      if (popup.closed) {
+        clearInterval(timer);
+        return;
+      }
+
+      try {
+        const parsedHash = new URLSearchParams(
+          popup.location.hash.substring(1)
+        );
+        const accessToken = parsedHash.get("access_token");
+        if (accessToken) {
+          clearInterval(timer);
+          popup.close();
+          googleOAuthMutation.mutateAsync(accessToken);
+          handleAuthModal();
+        }
+      } catch (error) {
+        // Ignore DOMException: Blocked a frame with origin "http://localhost:3000" from accessing a cross-origin frame.
+      }
+    }, 100);
   };
 
   return (
@@ -51,76 +83,24 @@ const SigninContent = ({ handleAuthModal }: Props) => {
           handleAuthModal();
         }}
       />
-      {/* Header */}
       <div>
         <h2 className="text-2xl font-semibold mb-4 text-center">Sign in</h2>
       </div>
-      {/* Form */}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="email">
-            Email
-          </label>
-          <input
-            className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-              errors.email ? "border-red-500" : ""
-            }`}
-            type="email"
-            {...register("email")}
-            autoComplete="off"
-            placeholder="Email address"
-          />
-          {errors.email && (
-            <p className="mt-2 text-xs text-red-500 font-semibold">
-              {errors.email.message}
-            </p>
-          )}
-        </div>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 font-bold mb-2"
-            htmlFor="password"
-          >
-            Password
-          </label>
-          <input
-            className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-              errors.password ? "border-red-500" : ""
-            }`}
-            type="password"
-            {...register("password")}
-            autoComplete="off"
-            placeholder="********"
-          />
-          {errors.password && (
-            <p className="mt-2 text-xs text-red-500 font-semibold">
-              {errors.password.message}
-            </p>
-          )}
-        </div>
-        <div className="mb-2">
-          <label className="flex items-center">
-            <input className="mr-2 leading-tight" type="checkbox" />
-            <span className="text-sm">Remember me</span>
-          </label>
-        </div>
-        <div className="flex justify-center">
-          <button
-            className=" bg-gray-900 hover:bg-[#fece2f] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="submit"
-          >
-            Submit
-          </button>
-        </div>
-      </form>
+      <SignInForm
+        handleSubmit={handleSubmit}
+        handleSignin={handleSignin}
+        handleGoogleLogin={handleGoogleLogin}
+        register={register}
+        errors={errors}
+      />
       <div className="mt-4 text-sm text-center">
         <span>
           Don't have an account yet?
           <button
             className="font-bold underline cursor-pointer ml-1"
-            // // onClick={() => {
-            //   //   handleAuthModal("Signup");
-            // }}
+            onClick={() => {
+              handleAuthModal("Signup");
+            }}
           >
             Signup
           </button>
