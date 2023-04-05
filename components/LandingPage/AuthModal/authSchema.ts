@@ -1,10 +1,17 @@
 import * as yup from "yup";
 
 export const signupSchema = yup.object().shape({
+  name: yup
+    .string()
+    .matches(
+      /^[가-힣a-zA-Z][^!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\s]*$/,
+      "Special characters are not allowed in the name"
+    )
+    .required("Name is required"),
   email: yup
     .string()
     .email("Please enter a valid email")
-    .required("Password is required"),
+    .required("Email is required"),
   password: yup
     .string()
     .min(6, "Password must be at least 6 characters")

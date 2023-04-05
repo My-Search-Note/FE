@@ -9,7 +9,16 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      borderColor: {
+        "not-last": "transparent",
+      },
+    },
+  },
+  variants: {
+    extend: {
+      borderColor: ["last"],
+    },
   },
   plugins: [require("@tailwindcss/typography")],
 };

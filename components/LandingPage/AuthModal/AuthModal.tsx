@@ -12,7 +12,7 @@ const AuthModal = ({ handleAuthModal, isSignin, isSignup }: Props) => {
   return (
     <div>
       <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-500 bg-opacity-75 z-50">
-        <div className="bg-white rounded-lg p-6">
+        <div className="bg-white p-6">
           {isSignin ? (
             <SigninContent handleAuthModal={handleAuthModal} />
           ) : (

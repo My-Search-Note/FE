@@ -2,39 +2,58 @@ import React, { useRef } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signupSchema } from "./authSchema";
-import axios from "axios";
+import { emailVerification } from "@/apis/User";
+import { userInfoAtom } from "@/atoms/userAtoms";
+import { SignUpInfo } from "@/interfaces/user";
+import { atom, useAtom } from "jotai";
+import SignupForm from "./SignupForm";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import VerificationInput from "./VerificationInput";
 
-type Props = {
+interface Props {
   handleAuthModal: (authType?: string) => void;
-};
+}
 
-//conffirmpw 빼기
-type formData = {
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
+// 이전에 만들어 둔 Jotai atom
+const showVerificationAtom = atom(false);
 
 const SignupContent = ({ handleAuthModal }: Props) => {
-  const BASE_URL = "http://localhost:8080/api";
-
+  // useForm Hook을 사용하여 폼 상태를 관리
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<formData>({
-    resolver: yupResolver(signupSchema),
+  } = useForm<SignUpInfo>({
+    resolver: yupResolver(signupSchema), // yup으로 유효성 검사 스키마 적용
   });
 
-  const onSubmit = async (data: formData) => {
-    try {
-      const request = await axios.post(`${BASE_URL}/signup`, data);
-      console.log("회원가입 성공");
-    } catch (error) {
-      console.error(error);
+  // Jotai Hook을 사용하여 showVerificationAtom 상태와 상호작용
+  const [showVerification, setShowVerification] = useAtom(showVerificationAtom);
+  const [userInfo, setUserInfo] = useAtom(userInfoAtom);
+
+  const emailVerificationMutation = emailVerification(); // 이메일 인증에 필요한 Mutation
+
+  const handleSignup = async (data: SignUpInfo) => {
+    const userInfo = {
+      email: data.email,
+      name: data.name,
+      password: data.password,
+    };
+    setUserInfo(userInfo);
+    emailVerificationMutation.mutateAsync(userInfo.email);
+    setShowVerification(true);
+  };
+
+  const handleCloseVerification = () => {
+    if (showVerification) {
+      const confirmed = window.confirm("Would you like to cancel your Signup?");
+      if (confirmed) {
+        setShowVerification(false);
+        handleAuthModal();
+      }
+    } else {
+      handleAuthModal();
     }
-    handleAuthModal();
   };
 
   return (
@@ -42,85 +61,54 @@ const SignupContent = ({ handleAuthModal }: Props) => {
       <CloseRoundedIcon
         className="absolute -right-3 -top-2 cursor-pointer"
         onClick={() => {
-          handleAuthModal();
+          handleCloseVerification();
         }}
       />
       <div>
         <h2 className="text-2xl font-semibold mb-4 text-center">Sign up</h2>
+        <div className="w-full flex justify-center gap-x-2 items-center mb-4">
+          <div
+            className={`h-1 w-1/5 ${
+              showVerification ? "bg-gray-700" : "bg-gray-600 dark:bg-gray-300"
+            }`}
+          />
+          <div
+            className={`h-1 w-1/5 ${
+              showVerification ? "bg-gray-700" : "bg-gray-200 dark:bg-gray-700"
+            }`}
+          />
+        </div>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="email">
-            Email
-          </label>
-          <input
-            className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-              errors.email ? "border-red-500" : ""
-            }`}
-            type="email"
-            {...register("email")}
-            autoComplete="off"
-            placeholder="Email address"
+      {!showVerification ? (
+        // SignupForm 컴포넌트를 렌더링
+        <div>
+          <SignupForm
+            handleSubmit={handleSubmit}
+            handleSignup={handleSignup}
+            register={register}
+            errors={errors}
           />
-          {errors.email && (
-            <p className="mt-2 text-xs text-red-500 font-semibold">
-              {errors.email.message}
-            </p>
-          )}
+          <div className="mt-4 text-sm text-center">
+            <span>
+              Already a member?
+              <button
+                className="font-bold underline cursor-pointer ml-1"
+                onClick={() => {
+                  handleAuthModal("Signin");
+                }}
+              >
+                Signin
+              </button>
+            </span>
+          </div>
         </div>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 font-bold mb-2"
-            htmlFor="password"
-          >
-            Password
-          </label>
-          <input
-            className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-              errors.password ? "border-red-500" : ""
-            }`}
-            type="password"
-            {...register("password")}
-            autoComplete="off"
-            placeholder="********"
-          />
-          {errors.password && (
-            <p className="mt-2 text-xs text-red-500 font-semibold">
-              {errors.password.message}
-            </p>
-          )}
-        </div>
-        <div className=" mb-7">
-          <label
-            className="block text-gray-700 font-bold mb-2"
-            htmlFor="password"
-          >
-            Confirm Password
-          </label>
-          <input
-            className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-              errors.confirmPassword ? "border-red-500" : ""
-            }`}
-            type="password"
-            {...register("confirmPassword")}
-            autoComplete="false"
-            placeholder="********"
-          />
-          {errors.confirmPassword && (
-            <p className="mt-2 text-xs text-red-500 font-semibold">
-              {errors.confirmPassword.message}
-            </p>
-          )}
-        </div>
-        <div className="flex justify-center">
-          <button
-            className="bg-gray-900 hover:bg-[#fece2f] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="submit"
-          >
-            Submit
-          </button>
-        </div>
-      </form>
+      ) : (
+        // VerificationInput 컴포넌트를 렌더링
+        <VerificationInput
+          userInfo={userInfo}
+          handleAuthModal={handleAuthModal}
+        />
+      )}
     </div>
   );
 };
