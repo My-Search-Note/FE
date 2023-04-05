@@ -1,17 +1,19 @@
 import React from "react";
+import QuickMemo from "../QuickMemo/MemoContainer";
 import Nav from "./Nav";
 
-type Props = {
+interface Props {
   children?: React.ReactNode;
-};
+}
 
 const Layout = ({ children }: Props) => {
   return (
-    <div className="bg-red-100 w-screen h-screen flex justify-between overflow-hidden">
+    <div className="w-screen h-screen flex flex-col-reverse lg:flex-row justify-between overflow-hidden">
       <Nav />
-      <div className="bg-zinc-100 w-[calc(100%-4rem)] flex flex-col md:flex-row">
+      <div className="bg-zinc-100 h-[calc(100%_-_4rem)] lg:w-[calc(100%_-_4rem)] lg:h-full flex flex-row">
         {children}
       </div>
+      <QuickMemo />
     </div>
   );
 };

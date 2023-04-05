@@ -1,15 +1,14 @@
-import { useEffect } from "react";
-import { useAtomValue, useAtom, atom } from "jotai";
-import { searchPageSearchQueryAtom } from "@/atoms/searchAtoms";
+import { useAtomValue } from "jotai";
+import { searchExcutedAtom, searchSearchQueryAtom } from "@/atoms/searchAtoms";
+import SearchResult from "./SearchResult";
 import SearchMain from "./SearchMain";
-import SearchList from "./SearchList";
 
 const SearchContainer = () => {
-  const searchPageSearchQuery = useAtomValue(searchPageSearchQueryAtom);
+  const searchExcuted = useAtomValue(searchExcutedAtom);
 
   return (
     <div className="w-full h-full flex flex-col">
-      {searchPageSearchQuery.length > 0 ? <SearchList /> : <SearchMain />}
+      {searchExcuted ? <SearchResult /> : <SearchMain />}
     </div>
   );
 };
