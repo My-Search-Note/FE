@@ -66,6 +66,7 @@ const SigninContent = ({ handleAuthModal }: Props) => {
           popup.close();
           googleOAuthMutation.mutateAsync(accessToken);
           handleAuthModal();
+          router.push("/search");
         }
       } catch (error) {}
     }, 100);
