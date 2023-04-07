@@ -107,7 +107,6 @@ export const deleteMemo = () => {
   );
 };
 
-//에러 성공 메시지
 export const editMemo = () => {
   const [currentPageNumber] = useAtom(currentPageNumberAtom);
   const [searchQuery] = useAtom(memoSearchQueryAtom);

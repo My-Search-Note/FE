@@ -14,24 +14,21 @@ interface Props {
   handleAuthModal: (authType?: string) => void;
 }
 
-// 이전에 만들어 둔 Jotai atom
 const showVerificationAtom = atom(false);
 
 const SignupContent = ({ handleAuthModal }: Props) => {
-  // useForm Hook을 사용하여 폼 상태를 관리
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<SignUpInfoWithConfirm>({
-    resolver: yupResolver(signupSchema), // yup으로 유효성 검사 스키마 적용
+    resolver: yupResolver(signupSchema),
   });
 
-  // Jotai Hook을 사용하여 showVerificationAtom 상태와 상호작용
   const [showVerification, setShowVerification] = useAtom(showVerificationAtom);
   const [userInfo, setUserInfo] = useAtom(userInfoAtom);
 
-  const emailVerificationMutation = emailVerification(); // 이메일 인증에 필요한 Mutation
+  const emailVerificationMutation = emailVerification();
 
   const handleSignup = async (data: SignUpInfoWithConfirm) => {
     const userInfo = {
@@ -80,7 +77,6 @@ const SignupContent = ({ handleAuthModal }: Props) => {
         </div>
       </div>
       {!showVerification ? (
-        // SignupForm 컴포넌트를 렌더링
         <div>
           <SignupForm
             handleSubmit={handleSubmit}
@@ -103,7 +99,6 @@ const SignupContent = ({ handleAuthModal }: Props) => {
           </div>
         </div>
       ) : (
-        // VerificationInput 컴포넌트를 렌더링
         <VerificationInput
           userInfo={userInfo}
           handleAuthModal={handleAuthModal}

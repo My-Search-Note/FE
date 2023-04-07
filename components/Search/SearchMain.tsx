@@ -74,7 +74,7 @@ const SearchMain = () => {
           </div>
           <div className="cursor-pointer group h-12 relative rounded-full w-12 p-2">
             <img
-              src={userImage}
+              src="/images/User.png"
               alt="User Profile Picture"
               className="object-cover rounded-full"
             />

@@ -42,10 +42,28 @@ const NewsList = ({ articles }: ArticleListProps) => {
           </div>
           <div className="w-1/2 text-center p-4 flex flex-col items-center justify-center">
             <div className="mb-4">
-              <h1 className="font-bold text-4xl underline decoration-amber-300 decoration-4 mb-2">
+              <h1
+                className="font-bold text-4xl underline decoration-amber-300 decoration-4 mb-2"
+                style={{
+                  display: "-webkit-box",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 2,
+                  overflow: "hidden",
+                }}
+              >
                 {article.title}
               </h1>
-              <p className="font-bold">{article.description}</p>
+              <p
+                className="font-bold"
+                style={{
+                  display: "-webkit-box",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 3,
+                  overflow: "hidden",
+                }}
+              >
+                {article.description}
+              </p>
             </div>
             <div>
               <p>{article.content}</p>

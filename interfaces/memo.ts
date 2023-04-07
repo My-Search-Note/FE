@@ -1,7 +1,7 @@
 export interface Memo extends MemoBody {
   id: number;
   userId: number;
-  createdAt: string;
+  created_at: string;
 }
 
 export interface MemoBody {

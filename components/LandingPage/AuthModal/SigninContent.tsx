@@ -45,7 +45,6 @@ const SigninContent = ({ handleAuthModal }: Props) => {
 
     const popup = window.open(googleAuthUrl, "_blank", "width=500,height=500");
 
-    // 팝업 차단기가 설정되어 있는 경우
     if (!popup) {
       alert("Please disable your popup blocker and try again.");
       return;

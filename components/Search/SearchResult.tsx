@@ -27,7 +27,6 @@ const SearchResult = () => {
 
   const { data, hasNextPage, isLoading } = useAtomValue(getSearchResult);
 
-  //observer 정함
   const observerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
