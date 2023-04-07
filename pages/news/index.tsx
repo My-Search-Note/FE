@@ -26,7 +26,7 @@ type ArticleListProps = {
 
 export const getStaticProps: GetStaticProps = async () => {
   const response = await axios.get(
-    `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.NEWS_APP_KEY}&pageSize=10`
+    `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.NEXT_PUBLIC_NEWS_APP_KEY}&pageSize=10`
   );
   const articles = response.data.articles;
 

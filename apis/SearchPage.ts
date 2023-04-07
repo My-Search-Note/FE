@@ -6,8 +6,8 @@ import { searchResourceAtom } from "@/atoms/searchAtoms";
 export const [, getSearchResult] = atomsWithInfiniteQuery((get) => {
   const searchQuery = get(searchSearchQueryAtom);
   const searchResource = get(searchResourceAtom);
-  const googleApiKey = process.env.GOOGLE_API_KEY;
-  const googleCx = process.env.GOOGLE_CX;
+  const googleApiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+  const googleCx = process.env.NEXT_PUBLIC_GOOGLE_CX;
   const maxResults = 20;
 
   return {

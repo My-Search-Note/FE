@@ -7,7 +7,7 @@ import Cookies from "js-cookie";
 import { verificationCodeAtom } from "@/atoms/userAtoms";
 import { SignInInfo, SignUpInfo } from "@/interfaces/user";
 
-const BASE_URL = `${process.env.BASE_URL}/user`;
+const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/user`;
 
 export const signIn = () => {
   return useMutation(

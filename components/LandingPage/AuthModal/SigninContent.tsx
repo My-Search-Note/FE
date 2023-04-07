@@ -38,8 +38,8 @@ const SigninContent = ({ handleAuthModal }: Props) => {
   const handleGoogleLogin = () => {
     const googleAuthUrl =
       "https://accounts.google.com/o/oauth2/auth?" +
-      `client_id=${process.env.GOOGLE_CLIENTID}&` +
-      `redirect_uri=${process.env.GOOGLE_REDIRECT}&` +
+      `client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENTID}&` +
+      `redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT}&` +
       "response_type=token&" +
       "scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile";
 

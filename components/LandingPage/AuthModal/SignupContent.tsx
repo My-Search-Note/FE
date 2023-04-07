@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { signupSchema } from "./authSchema";
 import { emailVerification } from "@/apis/User";
 import { userInfoAtom } from "@/atoms/userAtoms";
-import { SignUpInfo } from "@/interfaces/user";
+import { SignUpInfoWithConfirm } from "@/interfaces/user";
 import { atom, useAtom } from "jotai";
 import SignupForm from "./SignupForm";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
@@ -23,7 +23,7 @@ const SignupContent = ({ handleAuthModal }: Props) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignUpInfo>({
+  } = useForm<SignUpInfoWithConfirm>({
     resolver: yupResolver(signupSchema), // yup으로 유효성 검사 스키마 적용
   });
 
@@ -33,7 +33,7 @@ const SignupContent = ({ handleAuthModal }: Props) => {
 
   const emailVerificationMutation = emailVerification(); // 이메일 인증에 필요한 Mutation
 
-  const handleSignup = async (data: SignUpInfo) => {
+  const handleSignup = async (data: SignUpInfoWithConfirm) => {
     const userInfo = {
       email: data.email,
       name: data.name,
