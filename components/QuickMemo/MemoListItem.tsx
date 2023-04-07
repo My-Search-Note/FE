@@ -31,7 +31,7 @@ const MemoListItem = ({
             key={memo.id}
           >
             <div className="flex justify-between">
-              <p className="text-xs text-gray-400">{memo.created_at}</p>
+              <p className="text-xs text-gray-400">{memo.createdAt}</p>
               <div className="relative">
                 <DehazeRoundedIcon
                   className="text-sm text-gray-400 cursor-pointer"

@@ -1,5 +1,6 @@
 import React from "react";
 import { Skeleton } from "@mui/material";
+import { openPopUp } from "@/utils/openPopup";
 
 interface ExtractYoutubeResult {
   etag: string;
@@ -21,16 +22,21 @@ const YoutubeResult = ({
   pageInfo,
   isLoading,
 }: ExtractYoutubeResult) => {
+  const handleVideoClick = () => {
+    const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+    openPopUp(videoUrl);
+  };
+
   return (
     <div className="h-64 w-64 bg-gray-100 border-[2px] cursor-pointer">
-      <div className="w-full h-4/5">
+      <div className="w-full h-4/5" onClick={handleVideoClick}>
         {isLoading ? (
           <Skeleton variant="rectangular" width={254} height={203} />
         ) : (
           <img
             src={thumbnail}
             alt="thumbnail"
-            className="w-full h-full bg-yellow-300"
+            className="w-full h-full bg-slate-100"
           />
         )}
       </div>

@@ -1,7 +1,5 @@
 import Link from "next/link";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import TextSnippetRoundedIcon from "@mui/icons-material/TextSnippetRounded";
-import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import NewspaperRoundedIcon from "@mui/icons-material/NewspaperRounded";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Cookies from "js-cookie";
@@ -37,11 +35,6 @@ const Nav = () => {
         </Link>
         <Link href="/news">
           <NewspaperRoundedIcon className={isIconClicked("/news")} />
-        </Link>
-        <Link href="/memos">
-          <TextSnippetRoundedIcon
-            className={`lg:hidden block ${isIconClicked("/memos")}`}
-          />
         </Link>
       </div>
       <div className="ml-6 lg:ml-0">

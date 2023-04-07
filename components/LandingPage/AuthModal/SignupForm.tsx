@@ -14,10 +14,16 @@ const SignupForm = ({
   register,
   errors,
 }: Props) => (
-  <form onSubmit={handleSubmit(handleSignup)}>
+  <form
+    onSubmit={(e) => {
+      e.preventDefault();
+      handleSubmit(handleSignup)(e);
+    }}
+  >
     <FormInput
       label="Name"
       type="name"
+      name="name"
       register={register}
       errors={errors}
       placeholder="Name"
@@ -25,6 +31,7 @@ const SignupForm = ({
     <FormInput
       label="Email"
       type="email"
+      name="email"
       register={register}
       errors={errors}
       placeholder="Email address"
@@ -32,6 +39,7 @@ const SignupForm = ({
     <FormInput
       label="Password"
       type="password"
+      name="password"
       register={register}
       errors={errors}
       placeholder="********"
@@ -39,6 +47,7 @@ const SignupForm = ({
     <FormInput
       label="Confirm Password"
       type="password"
+      name="confirmPassword"
       register={register}
       errors={errors}
       placeholder="********"

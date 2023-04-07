@@ -20,6 +20,7 @@ const SignInForm = ({
     <FormInput
       label="Email"
       type="email"
+      name="email"
       register={register}
       errors={errors}
       placeholder="Email address"
@@ -27,6 +28,7 @@ const SignInForm = ({
     <FormInput
       label="Password"
       type="password"
+      name="password"
       register={register}
       errors={errors}
       placeholder="********"

@@ -8,10 +8,7 @@ export const [, getSearchResult] = atomsWithInfiniteQuery((get) => {
   const searchResource = get(searchResourceAtom);
   const googleApiKey = process.env.GOOGLE_API_KEY;
   const googleCx = process.env.GOOGLE_CX;
-  const youtubeApiKey = process.env.YOUTUBE_API_KEY;
   const maxResults = 20;
-  const google = "AIzaSyDXTLG96gjEfgtIEiPao0WEfpoFJAeKCso";
-  const cx = "11579fe74ab2d45de";
 
   return {
     queryKey: ["googleSearch", searchResource, searchQuery],

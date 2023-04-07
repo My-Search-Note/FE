@@ -3,12 +3,20 @@ import React from "react";
 interface Props {
   label: string;
   type: string;
+  name: string;
   register: any;
   errors: any;
   placeholder: string;
 }
 
-const FormInput = ({ label, type, register, errors, placeholder }: Props) => (
+const FormInput = ({
+  label,
+  type,
+  name,
+  register,
+  errors,
+  placeholder,
+}: Props) => (
   <div className="mb-4">
     <label className="block text-gray-700 font-bold mb-2" htmlFor={type}>
       {label}
@@ -18,7 +26,8 @@ const FormInput = ({ label, type, register, errors, placeholder }: Props) => (
         errors[type] ? "border-red-500" : ""
       }`}
       type={type}
-      {...register(type)}
+      name={name}
+      {...register(name)}
       autoComplete="off"
       placeholder={placeholder}
     />

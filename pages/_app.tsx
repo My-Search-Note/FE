@@ -8,8 +8,12 @@ import { queryClientAtom } from "jotai-tanstack-query";
 
 const queryClient = new QueryClient();
 
-const HydrateAtoms = ({ children }) => {
-  useHydrateAtoms([[queryClientAtom, queryClient]]);
+interface HydrateAtomsProps {
+  children: React.ReactNode;
+}
+
+const HydrateAtoms = ({ children }: HydrateAtomsProps) => {
+  useHydrateAtoms(new Map([[queryClientAtom, queryClient]]));
   return <>{children}</>;
 };
 

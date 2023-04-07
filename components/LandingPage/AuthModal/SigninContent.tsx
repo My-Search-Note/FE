@@ -1,6 +1,5 @@
-import React, { useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signinSchema } from "./authSchema";
 import { signIn, googleOAuth } from "@/apis/User";
@@ -39,8 +38,8 @@ const SigninContent = ({ handleAuthModal }: Props) => {
   const handleGoogleLogin = () => {
     const googleAuthUrl =
       "https://accounts.google.com/o/oauth2/auth?" +
-      "client_id=1068422395642-8ss0mk5h8b873emq57jmk1daol23av53.apps.googleusercontent.com&" +
-      "redirect_uri=http://localhost:3000/auth/google/callback&" +
+      `client_id=${process.env.GOOGLE_CLIENTID}&` +
+      `redirect_uri=${process.env.GOOGLE_REDIRECT}&` +
       "response_type=token&" +
       "scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile";
 
@@ -69,9 +68,7 @@ const SigninContent = ({ handleAuthModal }: Props) => {
           googleOAuthMutation.mutateAsync(accessToken);
           handleAuthModal();
         }
-      } catch (error) {
-        // Ignore DOMException: Blocked a frame with origin "http://localhost:3000" from accessing a cross-origin frame.
-      }
+      } catch (error) {}
     }, 100);
   };
 
@@ -95,7 +92,7 @@ const SigninContent = ({ handleAuthModal }: Props) => {
       />
       <div className="mt-4 text-sm text-center">
         <span>
-          Don't have an account yet?
+          Don&apos;t have an account yet?
           <button
             className="font-bold underline cursor-pointer ml-1"
             onClick={() => {

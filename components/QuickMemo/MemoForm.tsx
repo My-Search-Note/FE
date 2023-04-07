@@ -39,7 +39,9 @@ const MemoForm = ({ mode, handleMemoFormVisible }: Props) => {
     handleMemoFormVisible();
   };
 
-  const data = mode === "add" ? undefined : useAtomValue(getMemoById);
+  const memoDataById = useAtomValue(getMemoById);
+
+  const data = mode === "add" ? undefined : memoDataById;
 
   return (
     <div className="flex flex-col h-full">

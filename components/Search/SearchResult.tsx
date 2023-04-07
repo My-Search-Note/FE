@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, ChangeEvent } from "react";
 import { useAtom, useAtomValue } from "jotai";
 import { getSearchResult } from "@/apis/SearchPage";
 import styles from "@/styles/searchStyle.module.scss";
@@ -57,7 +57,7 @@ const SearchResult = () => {
     }
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTempQuery(e.target.value);
   };
 
@@ -122,6 +122,7 @@ const SearchResult = () => {
               ? searchOptiont === "youtube"
                 ? Array.from({ length: 20 }).map((_, index) => (
                     <YoutubeResult
+                      key={index}
                       etag=""
                       videoId=""
                       channelTitle=""
@@ -133,6 +134,7 @@ const SearchResult = () => {
                   ))
                 : Array.from({ length: 10 }).map((_, index) => (
                     <GoogleResult
+                      key={index}
                       title=""
                       snippet=""
                       link=""
@@ -145,6 +147,7 @@ const SearchResult = () => {
                   ?.map((item) =>
                     searchOptiont === "youtube" ? (
                       <YoutubeResult
+                        key={item.etag}
                         etag={item.etag}
                         videoId={item.id.videoId}
                         channelTitle={item.snippet.channelTitle}
@@ -155,6 +158,7 @@ const SearchResult = () => {
                       />
                     ) : (
                       <GoogleResult
+                        key={item.id}
                         title={item.title}
                         snippet={item.snippet}
                         link={item.link}

@@ -3,10 +3,10 @@ import { useAtom, useAtomValue } from "jotai";
 import { inputVerificationCodeAtom } from "@/atoms/userAtoms";
 import { verificationCodeAtom } from "@/atoms/userAtoms";
 import { signUp } from "@/apis/User";
-import { SignInInfo } from "@/interfaces/user";
+import { SignUpInfo } from "@/interfaces/user";
 
 interface VerificationInputProps {
-  userInfo: SignInInfo;
+  userInfo: SignUpInfo;
   handleAuthModal: () => void;
 }
 
@@ -44,7 +44,6 @@ const VerificationInput = ({
       prevInput.current.focus();
     }
 
-    // Update inputVerification
     const inputValues = [
       inputRef1.current?.value,
       inputRef2.current?.value,
@@ -69,7 +68,7 @@ const VerificationInput = ({
   return (
     <div>
       <p className="leading-tight mb-4 text-center">
-        We've sent a code to
+        We&apos;ve sent a code to
         <br /> <span className="font-bold">{email}</span>
       </p>
       <div className="flex justify-between">

@@ -36,7 +36,6 @@ const SearchMain = () => {
 
   const deleteAccountMutation = deleteAccount();
 
-  //onSuccess 옮기기
   const handleDeleteAccount = async () => {
     deleteAccountMutation.mutate(null, {
       onSuccess: () => {

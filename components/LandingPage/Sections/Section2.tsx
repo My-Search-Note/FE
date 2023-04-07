@@ -29,7 +29,7 @@ const Section2 = () => {
           className="w-60 h-60 p-4 bg-[#f7b3c7] shadow-lg cursor-pointer text-center flex flex-col justify-center"
         >
           <span className="text-3xl font-semibold">
-            "I forget important information."
+            &quot;I forget important information.&quot;
           </span>
           <span className="block mt-2 text-3xl">🤔</span>
         </motion.div>
@@ -40,7 +40,7 @@ const Section2 = () => {
           className="w-60 h-60 p-4 bg-[#c6dc60] shadow-lg cursor-pointer text-center flex flex-col justify-center"
         >
           <span className="text-3xl font-semibold">
-            "I lose ideas found while searching."
+            &quot;I lose ideas found while searching.&quot;
           </span>
           <span className="block mt-2 text-3xl">😥</span>
         </motion.div>
@@ -51,7 +51,7 @@ const Section2 = () => {
           className="w-60 h-60 p-4 bg-[#c3acf1] drop-shadow-lg cursor-pointer text-center flex flex-col justify-center"
         >
           <span className="text-3xl font-semibold">
-            "I waste time re-searching for info."
+            &quot;I waste time re-searching for info.&quot;
           </span>
           <span className="block mt-2 text-3xl">🙄</span>
         </motion.div>
@@ -62,7 +62,7 @@ const Section2 = () => {
           className="w-60 h-60 p-4 bg-[#ee4878] shadow-lg cursor-pointer text-center flex flex-col justify-center"
         >
           <span className="text-3xl font-semibold">
-            "I struggle to track and log search results."
+            &quot;I struggle to track and log search results.&quot;
           </span>
           <span className="block mt-2 text-3xl">🥺</span>
         </motion.div>

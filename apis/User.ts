@@ -5,17 +5,13 @@ import { useSetAtom } from "jotai";
 import { useMutation } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { verificationCodeAtom } from "@/atoms/userAtoms";
+import { SignInInfo, SignUpInfo } from "@/interfaces/user";
 
-interface userInfo {
-  email: string;
-  verificationCode: number;
-}
-
-const BASE_URL = "http://localhost:8080/user";
+const BASE_URL = `${process.env.BASE_URL}/user`;
 
 export const signIn = () => {
   return useMutation(
-    async (data) => {
+    async (data: SignInInfo) => {
       const url = `${BASE_URL}/signin`;
       const res = await axios.post(url, data);
       return res.data;
@@ -43,9 +39,9 @@ export const signIn = () => {
 
 export const signUp = () => {
   return useMutation(
-    async (data) => {
-      const url = "/user/signup";
-      const res = await axiosConfig.post(url, data);
+    async (data: SignUpInfo) => {
+      const url = `${BASE_URL}/signup`;
+      const res = await axios.post(url, data);
       return res;
     },
     {
@@ -61,7 +57,7 @@ export const signUp = () => {
 
 export const deleteAccount = () => {
   return useMutation(
-    async () => {
+    async (_: any | null = null) => {
       const url = "/user";
       await axiosConfig.delete(url);
     },
@@ -84,7 +80,7 @@ export const emailVerification = () => {
   return useMutation(
     async (email: string) => {
       const url = `${BASE_URL}/email-verification`;
-      const res = await axios.post<userInfo>(url, { email });
+      const res = await axios.post(url, { email });
       return res.data.verificationCode;
     },
     {
