@@ -9,6 +9,7 @@ import { atom, useAtom } from "jotai";
 import SignupForm from "./SignupForm";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import VerificationInput from "./VerificationInput";
+import { signUp } from "@/apis/User";
 
 interface Props {
   handleAuthModal: (authType?: string) => void;
@@ -40,6 +41,8 @@ const SignupContent = ({ handleAuthModal }: Props) => {
     emailVerificationMutation.mutateAsync(userInfo.email);
     setShowVerification(true);
   };
+
+  const signUpMutation = signUp();
 
   const handleCloseVerification = () => {
     if (showVerification) {
@@ -101,6 +104,7 @@ const SignupContent = ({ handleAuthModal }: Props) => {
       ) : (
         <VerificationInput
           userInfo={userInfo}
+          setShowVerification={setShowVerification}
           handleAuthModal={handleAuthModal}
         />
       )}

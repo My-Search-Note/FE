@@ -7,6 +7,11 @@ export interface SignUpInfo {
 export interface SignUpInfoWithConfirm extends SignUpInfo {
   confirmPassword: string;
 }
+
+export interface SignUpInfoWithVerificationCode extends SignUpInfo {
+  verificationCode: number;
+}
+
 export interface SignInInfo {
   email: string;
   password: string;

@@ -1,24 +1,24 @@
 import React, { useRef, ChangeEvent } from "react";
 import { useAtom, useAtomValue } from "jotai";
 import { inputVerificationCodeAtom } from "@/atoms/userAtoms";
-import { verificationCodeAtom } from "@/atoms/userAtoms";
 import { signUp } from "@/apis/User";
 import { SignUpInfo } from "@/interfaces/user";
 
 interface VerificationInputProps {
   userInfo: SignUpInfo;
+  setShowVerification: (show: boolean) => void;
   handleAuthModal: () => void;
 }
 
 const VerificationInput = ({
   userInfo,
+  setShowVerification,
   handleAuthModal,
 }: VerificationInputProps) => {
   const [inputVerification, setInputVerification] = useAtom(
     inputVerificationCodeAtom
   );
 
-  const verification = useAtomValue(verificationCodeAtom);
   const { email } = userInfo;
 
   const inputRef1 = useRef<HTMLInputElement>(null);
@@ -57,8 +57,13 @@ const VerificationInput = ({
   const signUpMutation = signUp();
 
   const handleVerification = () => {
-    if (inputVerification === verification) {
-      signUpMutation.mutate(userInfo);
+    if (inputVerification) {
+      const userInfoWithVerificationCode = {
+        ...userInfo,
+        verificationCode: inputVerification,
+      };
+      signUpMutation.mutate(userInfoWithVerificationCode);
+      setShowVerification(false);
       handleAuthModal();
     } else {
       alert("Invalid verification code");

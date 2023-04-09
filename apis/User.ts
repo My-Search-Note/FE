@@ -1,11 +1,9 @@
 import axiosConfig from "./axiosConfig";
 import axios from "axios";
 import { AxiosError } from "axios";
-import { useSetAtom } from "jotai";
 import { useMutation } from "@tanstack/react-query";
 import Cookies from "js-cookie";
-import { verificationCodeAtom } from "@/atoms/userAtoms";
-import { SignInInfo, SignUpInfo } from "@/interfaces/user";
+import { SignInInfo, SignUpInfo, SignUpInfoWithVerificationCode } from "@/interfaces/user";
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/user`;
 
@@ -39,7 +37,7 @@ export const signIn = () => {
 
 export const signUp = () => {
   return useMutation(
-    async (data: SignUpInfo) => {
+    async (data: SignUpInfoWithVerificationCode) => {
       const url = `${BASE_URL}/signup`;
       const res = await axios.post(url, data);
       return res;
@@ -76,16 +74,13 @@ export const deleteAccount = () => {
 };
 
 export const emailVerification = () => {
-  const setVerificationCode = useSetAtom(verificationCodeAtom);
   return useMutation(
     async (email: string) => {
       const url = `${BASE_URL}/email-verification`;
       const res = await axios.post(url, { email });
-      return res.data.verificationCode;
     },
     {
-      onSuccess: (verificationCode) => {
-        setVerificationCode(verificationCode);
+      onSuccess: () => {
         alert("Verification code sent");
       },
       onError: () => {
